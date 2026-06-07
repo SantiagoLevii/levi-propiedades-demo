@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Levi Propiedades - Inmobiliaria Premium en Buenos Aires</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary:    #080808;
+      --bg-secondary:  #0f0f0f;
+      --bg-card:       #141414;
+      --accent:        #C8A96D;
+      --accent-light:  #D9BC8A;
+      --text-primary:  #F0EBE0;
+      --text-secondary:#8A8A8A;
+      --text-muted:    #444;
+      --border:        #1e1e1e;
+      --border-accent: #2e2a20;
+      --font-display:  'Cormorant Garamond', Georgia, serif;
+      --font-body:     'DM Sans', system-ui, sans-serif;
+      --nav-h:         72px;
+      --ease:          0.35s ease;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, input, select, textarea { font-family: inherit; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      padding: 0 4rem;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      background: rgba(8,8,8,.78);
+      border-bottom: 1px solid rgba(200,169,109,.07);
+    }
+
+    .nav-logo {
+      flex: 0 0 auto;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--text-primary);
+    }
+    .nav-logo b { color: var(--accent); font-weight: 600; }
+
+    .nav-links {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: .8125rem;
+      font-weight: 400;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      transition: color var(--ease);
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta { flex: 0 0 auto; }
+
+    .btn-outline {
+      padding: .6rem 1.5rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background var(--ease), color var(--ease);
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--accent); color: #080808; }
+
+    .btn-primary {
+      padding: .9rem 2rem;
+      background: var(--accent);
+      color: #080808;
+      border: none;
+      font-size: .875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background var(--ease);
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-light); }
+
+    .btn-ghost {
+      padding: .9rem 2rem;
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid rgba(240,235,224,.28);
+      font-size: .875rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color var(--ease), color var(--ease);
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80') center/cover no-repeat;
+      animation: heroZoom 14s ease-out forwards;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.09); }
+      to   { transform: scale(1); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(8,8,8,.97) 0%,
+        rgba(8,8,8,.52) 48%,
+        rgba(8,8,8,.18) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 4rem 5.5rem;
+      max-width: 860px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .6875rem;
+      font-weight: 500;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6.5vw, 5.25rem);
+      font-weight: 300;
+      line-height: 1.06;
+      letter-spacing: -.01em;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+    .hero-headline em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(240,235,224,.6);
+      max-width: 460px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.125rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+    }
+    .stat-lbl {
+      font-size: .725rem;
+      color: var(--text-secondary);
+      letter-spacing: .05em;
+      margin-top: .2rem;
+      display: block;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .search-inner {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .search-field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.2rem 2rem;
+      border-right: 1px solid var(--border);
+      transition: background var(--ease);
+    }
+    .search-field:hover { background: rgba(200,169,109,.04); }
+
+    .search-field label {
+      font-size: .625rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .35rem;
+    }
+
+    .search-field select {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: .9375rem;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .search-field select option { background: var(--bg-secondary); color: var(--text-primary); }
+
+    .search-submit {
+      padding: 0 2.5rem;
+      background: var(--accent);
+      color: #080808;
+      border: none;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--ease);
+    }
+    .search-submit:hover { background: var(--accent-light); }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .625rem;
+      font-weight: 500;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 2.875rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -.01em;
+      color: var(--text-primary);
+      margin-bottom: 3rem;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    /* ── PROPIEDADES ── */
+    #propiedades { background: var(--bg-primary); }
+
+    .props-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+    .props-header .section-title { margin-bottom: 0; }
+
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 2px;
+    }
+
+    .prop-card {
+      background: var(--bg-card);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .prop-card:hover .prop-img { transform: scale(1.045); }
+    .prop-card:hover .prop-shim { background: rgba(8,8,8,.45); }
+
+    .prop-img-wrap {
+      position: relative;
+      height: 255px;
+      overflow: hidden;
+    }
+    .prop-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .65s ease;
+    }
+    .prop-shim {
+      position: absolute;
+      inset: 0;
+      background: rgba(8,8,8,.18);
+      transition: background .4s ease;
+    }
+    .prop-tag {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: .28rem .7rem;
+      background: var(--accent);
+      color: #080808;
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .prop-body { padding: 1.5rem; }
+
+    .prop-barrio {
+      font-size: .6375rem;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .45rem;
+    }
+
+    .prop-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: .85rem;
+    }
+
+    .prop-specs {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .prop-spec {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .8125rem;
+      color: var(--text-secondary);
+    }
+    .prop-spec svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      opacity: .55;
+      flex-shrink: 0;
+    }
+
+    .prop-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.25rem;
+    }
+
+    .prop-price {
+      font-family: var(--font-display);
+      font-size: 1.575rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .prop-price small {
+      font-size: .8125rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      margin-left: .2rem;
+    }
+
+    /* ── POR QUE ── */
+    #nosotros { background: var(--bg-secondary); }
+
+    .nosotros-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .nosotros-img-wrap { position: relative; }
+    .nosotros-img {
+      width: 100%;
+      height: 580px;
+      object-fit: cover;
+    }
+    .nosotros-img-frame {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 58%;
+      height: 58%;
+      border: 1px solid var(--accent);
+      opacity: .18;
+      pointer-events: none;
+    }
+
+    .nosotros-intro {
+      font-size: .9375rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 2.75rem;
+    }
+
+    .diffs { display: flex; flex-direction: column; gap: 2rem; }
+
+    .diff {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .diff-num {
+      font-family: var(--font-display);
+      font-size: 2.875rem;
+      font-weight: 300;
+      color: var(--accent);
+      opacity: .28;
+      line-height: 1;
+      min-width: 2.5rem;
+    }
+    .diff-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: .35rem;
+    }
+    .diff-text p {
+      font-size: .875rem;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    /* ── TESTIMONIOS ── */
+    #testimonios { background: var(--bg-primary); }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 2px;
+    }
+
+    .test-card {
+      background: var(--bg-card);
+      padding: 2.5rem;
+    }
+
+    .test-mark {
+      font-family: var(--font-display);
+      font-size: 4.5rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: .65;
+      opacity: .35;
+      margin-bottom: 1.5rem;
+    }
+
+    .test-text {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-primary);
+      line-height: 1.68;
+      margin-bottom: 2rem;
+    }
+
+    .test-rule {
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .test-author {
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .test-barrio {
+      font-size: .75rem;
+      color: var(--text-secondary);
+      margin-top: .18rem;
+      letter-spacing: .04em;
+    }
+
+    /* ── CONTACTO ── */
+    #contacto { background: var(--bg-secondary); }
+
+    .contacto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.65fr;
+      gap: 6rem;
+    }
+
+    .contacto-desc {
+      font-size: .9375rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .c-items { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .c-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .c-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .c-icon svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .c-lbl {
+      font-size: .6375rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .22rem;
+    }
+    .c-val {
+      font-size: .9375rem;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block;
+      font-size: .625rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: .5rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: .9375rem;
+      padding: .875rem 1rem;
+      outline: none;
+      transition: border-color var(--ease);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { height: 118px; resize: vertical; }
+    .form-group select option { background: var(--bg-card); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      padding: 2.75rem 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .footer-logo b { color: var(--accent); }
+
+    .footer-copy {
+      font-size: .8125rem;
+      color: var(--text-muted);
+    }
+
+    .footer-socials { display: flex; gap: .75rem; }
+
+    .soc {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: border-color var(--ease), color var(--ease);
+    }
+    .soc:hover { border-color: var(--accent); color: var(--accent); }
+    .soc svg { width: 14px; height: 14px; fill: currentColor; }
+
+    /* ── WHATSAPP ── */
+    .wa-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 200;
+      width: 56px;
+      height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,.38);
+      text-decoration: none;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .wa-btn:hover {
+      transform: scale(1.09);
+      box-shadow: 0 6px 28px rgba(37,211,102,.55);
+    }
+    .wa-btn svg { width: 28px; height: 28px; fill: #fff; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .72s ease, transform .72s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
+    .d4 { transition-delay: .4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .hero-headline { font-size: clamp(2.4rem, 9vw, 3.5rem); }
+      .hero-actions { flex-direction: column; }
+      .hero-stats { gap: 1.75rem; }
+
+      section { padding: 4rem 1.5rem; }
+
+      .search-inner { flex-direction: column; }
+      .search-field { border-right: none; border-bottom: 1px solid var(--border); }
+      .search-submit { padding: 1.2rem; text-align: center; }
+
+      .props-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .props-grid { grid-template-columns: 1fr; }
+
+      .nosotros-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .nosotros-img { height: 280px; }
+      .nosotros-img-frame { display: none; }
+
+      .test-grid { grid-template-columns: 1fr; }
+
+      .contacto-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+
+      footer { padding: 2.5rem 1.5rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+
+      .wa-btn { bottom: 1.25rem; right: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#inicio" class="nav-logo">Levi <b>Propiedades</b></a>
+    <ul class="nav-links">
+      <li><a href="#propiedades">Propiedades</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#contacto" class="btn-outline">Consultar</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Inmobiliaria Premium - Buenos Aires</p>
+      <h1 class="hero-headline">
+        Tu propiedad ideal,<br><em>encontrada.</em>
+      </h1>
+      <p class="hero-sub">
+        Veinte anos conectando familias con los hogares mas exclusivos de Buenos Aires. Palermo, Recoleta, Belgrano y mas alla.
+      </p>
+      <div class="hero-actions">
+        <a href="#propiedades" class="btn-primary">Ver Propiedades</a>
+        <a href="#contacto" class="btn-ghost">Hablar con un Asesor</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <span class="stat-num">340+</span>
+          <span class="stat-lbl">Propiedades activas</span>
+        </div>
+        <div>
+          <span class="stat-num">20</span>
+          <span class="stat-lbl">Anos de experiencia</span>
+        </div>
+        <div>
+          <span class="stat-num">98%</span>
+          <span class="stat-lbl">Satisfaccion de clientes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-inner">
+      <div class="search-field">
+        <label for="s-op">Operacion</label>
+        <select id="s-op">
+          <option>Comprar</option>
+          <option>Alquilar</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="s-barrio">Barrio</label>
+        <select id="s-barrio">
+          <option>Todos los barrios</option>
+          <option>Palermo</option>
+          <option>Recoleta</option>
+          <option>Belgrano</option>
+          <option>Nunez</option>
+          <option>San Telmo</option>
+          <option>Puerto Madero</option>
+          <option>Caballito</option>
+          <option>Villa Urquiza</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="s-tipo">Tipo</label>
+        <select id="s-tipo">
+          <option>Cualquier tipo</option>
+          <option>Departamento</option>
+          <option>Casa</option>
+          <option>PH</option>
+          <option>Local comercial</option>
+          <option>Oficina</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="s-precio">Presupuesto</label>
+        <select id="s-precio">
+          <option>Cualquier precio</option>
+          <option>Hasta USD 150.000</option>
+          <option>USD 150.000 - 300.000</option>
+          <option>USD 300.000 - 600.000</option>
+          <option>Mas de USD 600.000</option>
+        </select>
+      </div>
+      <button class="search-submit">Buscar</button>
+    </div>
+  </div>
+
+  <!-- PROPIEDADES DESTACADAS -->
+  <section id="propiedades">
+    <div class="props-header reveal">
+      <div>
+        <p class="section-label">Seleccion exclusiva</p>
+        <h2 class="section-title">Propiedades <em>Destacadas</em></h2>
+      </div>
+      <a href="#" class="btn-outline">Ver todas</a>
+    </div>
+    <div class="props-grid">
+
+      <div class="prop-card reveal d1">
+        <div class="prop-img-wrap">
+          <img class="prop-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Residencia en Palermo Chico">
+          <div class="prop-shim"></div>
+          <span class="prop-tag">Venta</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-barrio">Palermo Chico</p>
+          <h3 class="prop-name">Residencia con jardin privado y terraza</h3>
+          <div class="prop-specs">
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              4 ambientes
+            </span>
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/></svg>
+              320 m2
+            </span>
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><rect x="1" y="10" width="22" height="10" rx="1.5"/><path d="M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><line x1="8" y1="20" x2="8" y2="22"/><line x1="16" y1="20" x2="16" y2="22"/></svg>
+              Cochera doble
+            </span>
+          </div>
+          <div class="prop-divider"></div>
+          <p class="prop-price">USD 780.000 <small>+ expensas</small></p>
+        </div>
+      </div>
+
+      <div class="prop-card reveal d2">
+        <div class="prop-img-wrap">
+          <img class="prop-img" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Penthouse en Recoleta">
+          <div class="prop-shim"></div>
+          <span class="prop-tag">Venta</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-barrio">Recoleta</p>
+          <h3 class="prop-name">Penthouse con terraza propia y vistas</h3>
+          <div class="prop-specs">
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              5 ambientes
+            </span>
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/></svg>
+              240 m2
+            </span>
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              Terraza exclusiva
+            </span>
+          </div>
+          <div class="prop-divider"></div>
+          <p class="prop-price">USD 1.250.000 <small>+ expensas</small></p>
+        </div>
+      </div>
+
+      <div class="prop-card reveal d3">
+        <div class="prop-img-wrap">
+          <img class="prop-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Departamento en Belgrano R">
+          <div class="prop-shim"></div>
+          <span class="prop-tag">Alquiler</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-barrio">Belgrano R</p>
+          <h3 class="prop-name">Departamento luminoso con amenities completos</h3>
+          <div class="prop-specs">
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              3 ambientes
+            </span>
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/></svg>
+              105 m2
+            </span>
+            <span class="prop-spec">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8A16 16 0 0 0 16 16.09l.86-.86a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              SUM y pileta
+            </span>
+          </div>
+          <div class="prop-divider"></div>
+          <p class="prop-price">USD 1.800 <small>/ mes</small></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- POR QUE ELEGIRNOS -->
+  <section id="nosotros">
+    <div class="nosotros-grid">
+      <div class="nosotros-img-wrap reveal">
+        <img class="nosotros-img" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80" alt="Equipo Levi Propiedades">
+        <div class="nosotros-img-frame"></div>
+      </div>
+      <div class="reveal d2">
+        <p class="section-label">Por que elegirnos</p>
+        <h2 class="section-title">Veinte anos<br><em>construyendo confianza</em></h2>
+        <p class="nosotros-intro">
+          Somos una agencia con raices profundas en Buenos Aires. Nuestro equipo conoce cada barrio, cada cuadra, cada oportunidad. No vendemos propiedades: encontramos el lugar donde vas a vivir tu proxima etapa.
+        </p>
+        <div class="diffs">
+          <div class="diff">
+            <span class="diff-num">01</span>
+            <div class="diff-text">
+              <h3>Asesoria personalizada, sin presion</h3>
+              <p>Nos tomamos el tiempo de entender que buscas antes de mostrarte una sola propiedad. Tu ritmo, tus prioridades.</p>
+            </div>
+          </div>
+          <div class="diff">
+            <span class="diff-num">02</span>
+            <div class="diff-text">
+              <h3>Acceso a stock exclusivo off-market</h3>
+              <p>El 30% de nuestras operaciones se cierran con propiedades que nunca aparecen en portales publicos. La red importa.</p>
+            </div>
+          </div>
+          <div class="diff">
+            <span class="diff-num">03</span>
+            <div class="diff-text">
+              <h3>Acompanamiento legal y financiero total</h3>
+              <p>Escribanos, tasaciones, creditos hipotecarios: gestionamos todo el proceso para que vos solo firmes con seguridad.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="testimonios">
+    <div class="reveal">
+      <p class="section-label">Clientes que confian</p>
+      <h2 class="section-title">Lo que dicen<br><em>quienes ya encontraron su lugar</em></h2>
+    </div>
+    <div class="test-grid">
+
+      <div class="test-card reveal d1">
+        <div class="test-mark">"</div>
+        <p class="test-text">Llevaba un ano buscando sin resultados. Con Levi Propiedades encontre el departamento ideal en menos de un mes. El equipo entiende lo que necesitas antes de que termines de explicarlo.</p>
+        <div class="test-rule"></div>
+        <p class="test-author">Valentina Moreno</p>
+        <p class="test-barrio">Palermo Soho</p>
+      </div>
+
+      <div class="test-card reveal d2">
+        <div class="test-mark">"</div>
+        <p class="test-text">Vendimos la casa familiar en tiempo record y al precio que pediamos. La gestion fue impecable de principio a fin, sin sorpresas ni burocracia innecesaria.</p>
+        <div class="test-rule"></div>
+        <p class="test-author">Rodrigo y Patricia Suarez</p>
+        <p class="test-barrio">Belgrano R</p>
+      </div>
+
+      <div class="test-card reveal d3">
+        <div class="test-mark">"</div>
+        <p class="test-text">Como inversor necesito datos y rapidez. El equipo me presento tres oportunidades off-market en Recoleta que no estaban en ningun portal. Cerre dos de ellas ese mismo mes.</p>
+        <div class="test-rule"></div>
+        <p class="test-author">Marcelo Ibarra</p>
+        <p class="test-barrio">Recoleta</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="contacto-grid">
+
+      <div class="reveal">
+        <p class="section-label">Contacto</p>
+        <h2 class="section-title">Hablemos<br><em>cuando quieras</em></h2>
+        <p class="contacto-desc">
+          Nuestro equipo esta disponible para responder consultas, coordinar visitas y asesorarte sin ningun compromiso.
+        </p>
+        <div class="c-items">
+          <div class="c-item">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <p class="c-lbl">Direccion</p>
+              <p class="c-val">Av. Santa Fe 2847, piso 4<br>Recoleta, Buenos Aires</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8A16 16 0 0 0 16 16.09l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <p class="c-lbl">Telefono</p>
+              <p class="c-val">+54 11 4822-3400</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <p class="c-lbl">Email</p>
+              <p class="c-val">info@levipropiedades.com.ar</p>
+            </div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <p class="c-lbl">Horario de atencion</p>
+              <p class="c-val">Lun a Vie: 9:00 - 18:30<br>Sabados: 10:00 - 14:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d2">
+        <form onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <input type="text" placeholder="Juan Perez">
+            </div>
+            <div class="form-group">
+              <label>Telefono</label>
+              <input type="tel" placeholder="+54 11 XXXX-XXXX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="tu@email.com">
+          </div>
+          <div class="form-group">
+            <label>Me interesa</label>
+            <select>
+              <option value="">Seleccionar...</option>
+              <option>Quiero comprar</option>
+              <option>Quiero vender</option>
+              <option>Quiero alquilar</option>
+              <option>Quiero poner en alquiler</option>
+              <option>Inversion inmobiliaria</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea placeholder="Contanos que buscas: barrio, tipo de propiedad, presupuesto, necesidades especificas..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;padding:1.1rem;">Enviar Consulta</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <a href="#inicio" class="footer-logo">Levi <b>Propiedades</b></a>
+      <p class="footer-copy">© 2026 Levi Propiedades. Todos los derechos reservados.</p>
+      <div class="footer-socials">
+        <a href="#" class="soc" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="#" class="soc" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" class="soc" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP -->
+  <a href="https://wa.me/5491148223400" class="wa-btn" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
