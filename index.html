@@ -25,7 +25,7 @@
 
     body {
       font-family: var(--font);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 400;
       background: var(--bg);
       color: var(--text);
@@ -211,7 +211,7 @@
     }
     .hero-stat:last-child { border-right: none; }
     .hs-n {
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 600;
       color: var(--text);
       line-height: 1;
@@ -259,16 +259,16 @@
     .section-label {
       font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 1.5rem;
     }
     .section-title {
-      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 500;
       line-height: 1.15;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       margin-bottom: 1rem;
     }
 
@@ -323,6 +323,8 @@
       display: block;
       transition: transform 0.3s ease;
     }
+    .props-grid .pcard:first-child { grid-column: span 2; }
+    .props-grid .pcard:first-child .pcard-img { aspect-ratio: 4/3; }
     .pcard:hover .pcard-img { transform: scale(1.04); }
 
     .pcard-overlay {
@@ -359,7 +361,7 @@
       margin-bottom: 0.3rem;
     }
     .pcard-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 500;
       line-height: 1.35;
       margin-bottom: 0.75rem;
@@ -378,7 +380,7 @@
       color: var(--muted);
     }
     .pcard-price {
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--text);
     }
@@ -411,10 +413,11 @@
 
     .nos-quote {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
       font-style: italic;
       font-weight: 400;
       line-height: 1.45;
+      letter-spacing: -0.01em;
       color: var(--text2);
       margin-bottom: 2rem;
     }
@@ -444,7 +447,7 @@
     .nos-body {
       font-size: 13px;
       font-weight: 300;
-      color: var(--muted);
+      color: rgba(255,255,255,0.55);
       line-height: 1.7;
     }
 
@@ -536,16 +539,16 @@
       align-items: start;
     }
     .tas-title {
-      font-size: clamp(1.5rem, 2.8vw, 2.25rem);
-      font-weight: 600;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
       margin-bottom: 1rem;
     }
     .tas-desc {
       font-size: 14px;
       font-weight: 300;
-      color: var(--muted);
+      color: rgba(255,255,255,0.55);
       line-height: 1.75;
       margin-bottom: 1.5rem;
     }
@@ -596,10 +599,10 @@
       align-items: start;
     }
     .con-title {
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      font-weight: 600;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 500;
       line-height: 1.15;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       margin-bottom: 2rem;
     }
     .con-items { display: flex; flex-direction: column; }
@@ -704,10 +707,10 @@
       font-weight: 500;
       color: var(--text);
       cursor: pointer;
-      transition: border-color 0.25s, transform 0.25s;
+      transition: all 0.25s ease;
       text-decoration: none;
     }
-    .wa-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .wa-btn:hover { background: #222; border-color: var(--accent); gap: 0.85rem; transform: translateY(-2px); }
     .wa-icon { flex-shrink: 0; }
 
     /* FOOTER */
@@ -816,17 +819,18 @@
     /* OFF-MARKET */
     #off-market {
       background: #111110;
-      padding: 5rem 2.5rem;
+      padding: 6rem 2.5rem;
       text-align: center;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
+    #off-market .section-label { max-width: 560px; margin-left: auto; margin-right: auto; }
     .om-title {
       font-size: clamp(1.4rem, 2.8vw, 2.25rem);
       font-weight: 600;
       line-height: 1.2;
       letter-spacing: -0.02em;
-      max-width: 620px;
+      max-width: 560px;
       margin: 0 auto 0.75rem;
     }
     .om-sub {
@@ -935,15 +939,35 @@
       z-index: 999;
       background: #000;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 0.75rem;
       font-size: 1rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       color: #F2EDE6;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.8s ease;
     }
     #preloader.fade-out { opacity: 0; pointer-events: none; }
+    .preloader-line {
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      animation: pre-line 1.8s ease forwards;
+    }
+    @keyframes pre-line {
+      from { width: 0; }
+      to   { width: 120px; }
+    }
+    .preloader-sub {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: -0.25rem;
+    }
 
     /* REVEAL */
     .reveal {
@@ -1000,7 +1024,11 @@
 </head>
 <body>
 
-  <div id="preloader">Levi Propiedades</div>
+  <div id="preloader">
+    <span>Levi Propiedades</span>
+    <div class="preloader-line"></div>
+    <span class="preloader-sub">Cargando...</span>
+  </div>
 
   <nav id="main-nav">
     <a href="#inicio" class="nav-logo">Levi Propiedades</a>
@@ -1096,7 +1124,7 @@
 
     <div class="props-grid">
 
-      <div class="pcard pcard-big reveal" style="grid-column: span 2">
+      <div class="pcard pcard-big reveal">
         <div class="pcard-img-wrap">
           <img class="pcard-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80" alt="Residencia Palermo Chico">
           <div class="pcard-overlay">Ver propiedad &rarr;</div>
@@ -1558,10 +1586,13 @@
   </a>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const pre = document.getElementById('preloader');
+    const pre = document.getElementById('preloader');
+    Promise.all([
+      new Promise(r => window.addEventListener('load', r)),
+      new Promise(r => setTimeout(r, 1800))
+    ]).then(() => {
       pre.classList.add('fade-out');
-      setTimeout(() => pre.remove(), 550);
+      setTimeout(() => pre.remove(), 850);
     });
 
     const navEl = document.getElementById('main-nav');
