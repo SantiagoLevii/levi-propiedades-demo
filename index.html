@@ -6,14 +6,16 @@
   <title>Levi Propiedades - Buenos Aires</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:         #FAFAF8;
-      --text:       #0E0E0C;
-      --muted:      #7A7A76;
-      --rule:       #D4D4CE;
-      --font-serif: 'Playfair Display', Georgia, serif;
+      --bg:     #0A0A09;
+      --bg2:    #050504;
+      --text:   #F0EBE0;
+      --muted:  #7A7468;
+      --gold:   #C8A96D;
+      --rule:   #1E1D1B;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'DM Sans', system-ui, sans-serif;
     }
 
@@ -31,34 +33,8 @@
     }
 
     img { display: block; max-width: 100%; }
-    a { color: inherit; }
+    a { color: inherit; text-decoration: none; }
     input, select, textarea, button { font-family: inherit; }
-    blockquote { font-style: normal; }
-
-    hr.rule {
-      border: none;
-      border-top: 0.5px solid var(--rule);
-      margin: 0 4rem;
-    }
-
-    .link-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      font-size: .6875rem;
-      font-weight: 400;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--text);
-      background: none;
-      border: none;
-      border-bottom: 0.5px solid var(--text);
-      padding-bottom: .15rem;
-      cursor: pointer;
-      transition: opacity .22s;
-    }
-    .link-arrow:hover { opacity: .38; }
 
     /* NAV */
     nav {
@@ -67,22 +43,21 @@
       z-index: 100;
       display: flex;
       align-items: center;
-      padding: 1rem 3rem;
-      background: rgba(250,250,248,.92);
+      padding: 1.25rem 3rem;
+      background: rgba(10,10,9,.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 0.5px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
     }
 
     .nav-logo {
       flex: 0 0 auto;
       font-family: var(--font-serif);
-      font-size: 1.125rem;
+      font-size: 1.25rem;
       font-weight: 400;
       font-style: italic;
-      text-decoration: none;
+      letter-spacing: .01em;
       color: var(--text);
-      letter-spacing: -.01em;
     }
 
     .nav-links {
@@ -93,108 +68,187 @@
       list-style: none;
     }
     .nav-links a {
-      text-decoration: none;
-      font-size: .6875rem;
+      font-size: 11px;
       font-weight: 400;
-      letter-spacing: .12em;
+      letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--muted);
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--text); }
 
+    .nav-cta {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: .45rem 1.1rem;
+      transition: background .22s, color .22s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
     /* HERO */
     .hero {
       position: relative;
-      padding: 8rem 4rem 5rem;
-      border-bottom: 0.5px solid var(--rule);
+      height: 100vh;
+      min-height: 640px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10,10,9,.95) 0%,
+        rgba(10,10,9,.6) 50%,
+        rgba(10,10,9,.2) 100%
+      );
+    }
+
+    .hero-social {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      z-index: 2;
+    }
+    .hero-social::before,
+    .hero-social::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 48px;
+      background: var(--muted);
+    }
+    .hero-social a {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+      transition: color .2s;
+    }
+    .hero-social a:hover { color: var(--gold); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 4rem 4rem;
+      max-width: 860px;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
     }
 
     .hero-head {
       font-family: var(--font-serif);
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      font-weight: 400;
-      line-height: 1.0;
-      letter-spacing: -.035em;
-      margin-bottom: .75rem;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: .96;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
     }
-    .hero-head em { font-style: italic; }
+    .hero-head em { font-style: italic; color: var(--gold); }
 
     .hero-sub {
-      font-family: var(--font-serif);
-      font-size: 1rem;
-      font-weight: 400;
-      font-style: italic;
+      font-size: .875rem;
+      font-weight: 300;
       color: var(--muted);
-      max-width: 380px;
-      line-height: 1.6;
-      margin-bottom: .9rem;
+      max-width: 340px;
+      line-height: 1.75;
+      margin-bottom: 2rem;
     }
 
-    .hero-cta { margin-bottom: 1.5rem; }
+    .hero-btn {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      padding: .75rem 2rem;
+      transition: opacity .22s;
+    }
+    .hero-btn:hover { opacity: .82; }
 
     .hero-stats {
+      position: relative;
+      z-index: 2;
       display: flex;
-      gap: 0;
-      padding-top: 1.25rem;
-      border-top: 0.5px solid var(--rule);
+      border-top: 1px solid var(--rule);
     }
     .hero-stats > div {
-      padding-right: 2rem;
+      flex: 1;
+      padding: 1.5rem 2.5rem;
       border-right: 1px solid var(--rule);
     }
-    .hero-stats > div:not(:first-child) { padding-left: 2rem; }
-    .hero-stats > div:last-child { border-right: none; padding-right: 0; }
+    .hero-stats > div:last-child { border-right: none; }
 
     .stat-n {
       display: block;
       font-family: var(--font-serif);
-      font-size: 1.75rem;
-      font-weight: 400;
+      font-size: 2.25rem;
+      font-weight: 300;
       line-height: 1;
-      margin-bottom: .2rem;
+      color: var(--gold);
+      margin-bottom: .25rem;
     }
     .stat-l {
-      font-size: .625rem;
+      font-size: 11px;
       font-weight: 300;
-      letter-spacing: .12em;
+      letter-spacing: .1em;
+      text-transform: uppercase;
       color: var(--muted);
     }
 
-    /* HERO SIDE LABEL */
-    .hero-side {
-      position: absolute;
-      right: 3rem;
-      top: 50%;
-      transform: translateY(-50%) rotate(90deg);
-      transform-origin: center center;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--rule);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
     /* SEARCH */
-    .search-wrap { border-bottom: 0.5px solid var(--rule); }
+    .search-wrap {
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--rule);
+      background: #0D0D0B;
+    }
     .search-inner { display: flex; align-items: stretch; }
 
     .sf {
       flex: 1;
       padding: 1.1rem 1.75rem;
-      border-right: 0.5px solid var(--rule);
+      border-right: 1px solid var(--rule);
       display: flex;
       flex-direction: column;
-      gap: .25rem;
+      gap: .3rem;
     }
     .sf-lbl {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--gold);
     }
     .sf select {
       background: transparent;
@@ -207,232 +261,294 @@
       -webkit-appearance: none;
       cursor: pointer;
     }
-    .sf select option { background: var(--bg); }
+    .sf select option { background: #0D0D0B; }
 
     .search-go {
       padding: 0 2.5rem;
-      background: var(--text);
+      background: var(--gold);
       color: var(--bg);
       border: none;
       font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-weight: 500;
+      letter-spacing: .14em;
       text-transform: uppercase;
       cursor: pointer;
       white-space: nowrap;
       transition: opacity .22s;
     }
-    .search-go:hover { opacity: .72; }
+    .search-go:hover { opacity: .82; }
 
     /* SECTIONS */
-    section { padding: 5rem 4rem; }
+    section { padding: 6rem 4rem; }
 
-    .eyebrow {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: .75rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
     }
-
-    .sec-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -.025em;
-    }
-    .sec-title em { font-style: italic; }
-
-    /* SECTION NUMBERS */
-    .sec-num {
+    .sec-label::before {
+      content: '';
       display: block;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: .5;
-      margin-bottom: .4rem;
+      width: 24px;
+      height: 1px;
+      background: var(--gold);
     }
-    .sec-num::before { content: "— "; }
 
     /* PROPIEDADES */
+    #propiedades { border-bottom: 1px solid var(--rule); }
+
     .props-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding-bottom: 1.2rem;
-      border-bottom: 0.5px solid var(--rule);
-      margin-bottom: 1.2rem;
+      margin-bottom: 2rem;
     }
 
+    .sec-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.25rem, 4vw, 3.75rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+    .sec-title em { font-style: italic; color: var(--gold); }
+
+    .link-ghost {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: .15rem;
+      transition: color .2s, border-color .2s;
+    }
+    .link-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* asymmetric grid: first card 2x wide */
     .props-grid {
       display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 1.5rem;
+      grid-template-columns: 1.7fr 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
     }
+    .props-grid .prop:first-child { grid-row: span 1; }
 
-    .prop { display: flex; flex-direction: column; }
+    .prop {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
 
     .prop-img-wrap {
       position: relative;
       overflow: hidden;
-      height: 240px;
-      margin-bottom: .6rem;
+      height: 300px;
     }
+    .props-grid .prop:first-child .prop-img-wrap { height: 400px; }
+
     .prop-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform .65s ease;
+      transition: transform .7s ease;
     }
-    .prop:hover .prop-img { transform: scale(1.04); }
+    .prop:hover .prop-img { transform: scale(1.05); }
 
     .prop-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,.45);
+      background: rgba(0,0,0,.55);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-weight: 500;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      color: #FAFAF8;
+      color: var(--text);
       opacity: 0;
       transition: opacity .3s ease;
     }
+    .prop-overlay span { border-bottom: 1px solid var(--gold); padding-bottom: .2rem; color: var(--gold); }
     .prop:hover .prop-overlay { opacity: 1; }
 
+    .prop-info { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+
     .prop-op {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      color: var(--muted);
-      border: 0.5px solid var(--rule);
-      display: inline-block;
-      padding: .15rem .5rem;
-      margin-bottom: .55rem;
-      align-self: flex-start;
+      color: var(--gold);
+      margin-bottom: .4rem;
     }
 
     .prop-barrio {
       font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-weight: 300;
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: .33rem;
+      margin-bottom: .3rem;
     }
 
     .prop-title {
       font-family: var(--font-serif);
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 400;
       line-height: 1.25;
-      margin-bottom: .9rem;
+      margin-bottom: 1rem;
     }
 
     .prop-foot {
       margin-top: auto;
       padding-top: .75rem;
-      border-top: 0.5px solid var(--rule);
+      border-top: 1px solid var(--rule);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
     }
     .prop-specs {
-      font-size: .8rem;
+      font-size: .8125rem;
       font-weight: 300;
       color: var(--muted);
     }
     .prop-price {
       font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-weight: 700;
-      text-align: right;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--gold);
     }
 
     /* NOSOTROS */
+    #nosotros {
+      border-bottom: 1px solid var(--rule);
+    }
+
     .nosotros-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 6rem;
       align-items: start;
     }
 
     .pull-quote {
       font-family: var(--font-serif);
-      font-size: clamp(1.625rem, 2.8vw, 2.5rem);
-      font-weight: 400;
-      line-height: 1.22;
-      letter-spacing: -.025em;
-      margin-top: .9rem;
+      font-size: clamp(2rem, 3.5vw, 3.25rem);
+      font-weight: 300;
+      line-height: 1.18;
+      letter-spacing: -.02em;
+      margin-top: 1.5rem;
     }
-    .pull-quote em { font-style: italic; }
+    .pull-quote em { font-style: italic; color: var(--gold); }
 
-    .diffs { margin-top: 0; }
+    .diffs { margin-top: 1rem; }
     .diff {
-      padding: 1.125rem 0;
-      border-top: 0.5px solid var(--rule);
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--rule);
       display: grid;
-      grid-template-columns: 2.5rem 1fr;
-      gap: 1rem;
+      grid-template-columns: 2.25rem 1fr;
+      gap: 1.25rem;
       align-items: start;
     }
-    .diff:last-child { border-bottom: 0.5px solid var(--rule); }
+    .diff:last-child { border-bottom: 1px solid var(--rule); }
 
     .diff-n {
       font-family: var(--font-serif);
-      font-size: .9375rem;
-      font-weight: 400;
-      color: var(--muted);
-      padding-top: .1rem;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--gold);
+      padding-top: .05rem;
     }
     .diff-title {
       font-family: var(--font-serif);
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 400;
-      margin-bottom: .27rem;
+      margin-bottom: .3rem;
       line-height: 1.3;
     }
     .diff-body {
       font-size: .875rem;
       font-weight: 300;
       color: var(--muted);
-      line-height: 1.65;
+      line-height: 1.7;
+    }
+
+    /* AMENITIES STRIP */
+    .amenities-wrap {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .amenities-track {
+      display: flex;
+      width: max-content;
+      animation: scroll-strip 28s linear infinite;
+    }
+    .amenities-wrap:hover .amenities-track { animation-play-state: paused; }
+
+    @keyframes scroll-strip {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .amenity {
+      position: relative;
+      width: 280px;
+      height: 200px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .amenity img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(.55);
+    }
+    .amenity-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--text);
     }
 
     /* TESTIMONIOS */
-    #testimonios { text-align: left; }
+    #testimonios { border-bottom: 1px solid var(--rule); }
 
     .test-grid {
       display: grid;
       grid-template-columns: repeat(3,1fr);
       gap: 0;
-      margin-top: 1.25rem;
-      border-top: 0.5px solid var(--rule);
+      margin-top: 2rem;
     }
 
     .test-item {
-      padding: 1.5rem 1.5rem 0 1.5rem;
-      border-right: 0.5px solid var(--rule);
+      padding: 2rem 2rem 0 0;
+      border-top: 1px solid var(--rule);
     }
-    .test-item:first-child { padding-left: 0; }
-    .test-item:last-child { border-right: none; }
+    .test-item:not(:first-child) { padding-left: 2rem; border-left: 1px solid var(--rule); }
 
     .test-quote {
       font-family: var(--font-serif);
-      font-size: 1rem;
-      font-weight: 400;
+      font-size: 1.35rem;
+      font-weight: 300;
       font-style: italic;
-      line-height: 1.6;
+      line-height: 1.55;
       letter-spacing: -.01em;
-      margin-bottom: .75rem;
+      margin-bottom: 1.25rem;
     }
 
     .test-author {
@@ -440,55 +556,61 @@
       font-weight: 400;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--gold);
     }
 
     /* CONTACTO */
+    #contacto { border-bottom: 1px solid var(--rule); }
+
     .contacto-grid {
       display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: 4rem;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
       align-items: start;
     }
 
     .c-title {
       font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -.025em;
-      margin-bottom: 1.8rem;
+      font-size: clamp(2.25rem, 4vw, 3.75rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      margin-top: 1.25rem;
+      margin-bottom: 2rem;
     }
-    .c-title em { font-style: italic; }
+    .c-title em { font-style: italic; color: var(--gold); }
 
-    .c-list {
+    .c-list { display: flex; flex-direction: column; }
+    .c-item {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--rule);
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: .25rem;
     }
     .c-lbl {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: .2rem;
+      color: var(--gold);
     }
     .c-val {
       font-size: .9375rem;
       font-weight: 300;
-      line-height: 1.5;
+      color: var(--text);
+      line-height: 1.55;
     }
 
-    .ff { margin-bottom: 1.2rem; }
+    .ff { margin-bottom: 1.35rem; }
     .ff label {
       display: block;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: .36rem;
+      margin-bottom: .4rem;
     }
     .ff input,
     .ff select,
@@ -496,7 +618,7 @@
       width: 100%;
       background: transparent;
       border: none;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid var(--rule);
       outline: none;
       padding: .55rem 0;
       font-size: .9375rem;
@@ -508,7 +630,7 @@
     }
     .ff input:focus,
     .ff select:focus,
-    .ff textarea:focus { border-bottom-color: #0E0E0C; }
+    .ff textarea:focus { border-bottom-color: var(--gold); }
     .ff input::placeholder,
     .ff textarea::placeholder { color: var(--muted); }
     .ff select option { background: var(--bg); }
@@ -516,31 +638,47 @@
     .ff-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
+      gap: 1.5rem;
     }
+
+    .submit-btn {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      border: none;
+      padding: .75rem 2rem;
+      cursor: pointer;
+      margin-top: .5rem;
+      transition: opacity .22s;
+    }
+    .submit-btn:hover { opacity: .82; }
 
     /* FOOTER */
     footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid var(--rule);
+      background: var(--bg2);
+      border-top: 1px solid var(--gold);
+      padding: 3rem;
     }
 
     .footer-cols {
       display: grid;
-      grid-template-columns: 1.75fr 1fr 1fr 1fr;
-      gap: 2rem;
-      margin-bottom: 1.2rem;
-      padding-bottom: 1.2rem;
-      border-bottom: 0.5px solid var(--rule);
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--rule);
     }
 
     .footer-logo {
       display: block;
       font-family: var(--font-serif);
-      font-size: 1.125rem;
+      font-size: 1.35rem;
       font-weight: 400;
       font-style: italic;
-      text-decoration: none;
       color: var(--text);
       margin-bottom: .75rem;
     }
@@ -548,32 +686,31 @@
       font-size: 12px;
       font-weight: 300;
       color: var(--muted);
-      line-height: 1.65;
-      max-width: 220px;
+      line-height: 1.75;
+      max-width: 240px;
     }
 
     .footer-col-hd {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: .9rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
     }
     .footer-links {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: .5rem;
+      gap: .6rem;
     }
     .footer-links a {
       font-size: 12px;
       font-weight: 300;
-      text-decoration: none;
-      color: var(--text);
-      transition: opacity .2s;
+      color: var(--muted);
+      transition: color .2s;
     }
-    .footer-links a:hover { opacity: .38; }
+    .footer-links a:hover { color: var(--text); }
 
     .footer-bottom {
       display: flex;
@@ -594,56 +731,54 @@
       font-weight: 400;
       letter-spacing: .12em;
       text-transform: uppercase;
-      text-decoration: none;
       color: var(--muted);
       transition: color .2s;
     }
-    .footer-socials a:hover { color: var(--text); }
+    .footer-socials a:hover { color: var(--gold); }
 
     /* REVEAL */
     .reveal {
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .72s ease, transform .72s ease;
+      transform: translateY(20px);
+      transition: opacity .75s ease, transform .75s ease;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .d1 { transition-delay: .1s; }
-    .d2 { transition-delay: .2s; }
-    .d3 { transition-delay: .32s; }
+    .d2 { transition-delay: .22s; }
+    .d3 { transition-delay: .36s; }
 
     /* MOBILE */
     @media (max-width: 768px) {
-      hr.rule { margin: 0 1.5rem; }
-      nav { padding: .75rem 1.5rem; }
+      nav { padding: .85rem 1.5rem; }
       .nav-links { display: none; }
 
-      .hero { padding: 6rem 1.5rem 3.5rem; }
+      .hero-content { padding: 0 1.5rem 3rem; }
+      .hero-social { display: none; }
       .hero-stats { flex-wrap: wrap; }
-      .hero-stats > div { padding-right: 1.5rem; border-right: none; border-bottom: 0.5px solid var(--rule); padding-bottom: .75rem; }
-      .hero-stats > div:not(:first-child) { padding-left: 0; border-top: none; padding-top: .75rem; }
+      .hero-stats > div { padding: 1rem 1.5rem; border-right: none; border-bottom: 1px solid var(--rule); }
       .hero-stats > div:last-child { border-bottom: none; }
-      .hero-side { display: none; }
 
       section { padding: 4rem 1.5rem; }
 
       .search-inner { flex-direction: column; }
-      .sf { border-right: none; border-bottom: 0.5px solid var(--rule); }
+      .sf { border-right: none; border-bottom: 1px solid var(--rule); }
       .search-go { padding: 1rem; text-align: center; }
 
       .props-head { flex-direction: column; align-items: flex-start; gap: .75rem; }
-      .props-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .props-grid { grid-template-columns: 1fr; gap: 1px; }
+      .props-grid .prop:first-child .prop-img-wrap { height: 300px; }
 
-      .nosotros-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nosotros-grid { grid-template-columns: 1fr; gap: 3rem; }
 
       .test-grid { grid-template-columns: 1fr; }
-      .test-item { padding: 1.25rem 0; border-right: none; border-top: 0.5px solid var(--rule); }
-      .test-item:first-child { border-top: none; padding-top: 0; }
+      .test-item { padding: 1.5rem 0 0 0; }
+      .test-item:not(:first-child) { padding-left: 0; border-left: none; }
 
-      .contacto-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contacto-grid { grid-template-columns: 1fr; gap: 3rem; }
       .ff-row { grid-template-columns: 1fr; }
 
       footer { padding: 2rem 1.5rem; }
-      .footer-cols { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; gap: .75rem; text-align: center; }
     }
   </style>
@@ -659,32 +794,41 @@
       <li><a href="#testimonios">Testimonios</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
-    <a href="#contacto" class="link-arrow">Consultar &rarr;</a>
+    <a href="#contacto" class="nav-cta">Consultar</a>
   </nav>
 
   <!-- HERO -->
   <section class="hero" id="inicio">
-    <span class="hero-side">Buenos Aires &middot; Propiedades Premium</span>
-    <h1 class="hero-head reveal">
-      Encontramos<br><em>el lugar.</em>
-    </h1>
-    <p class="hero-sub reveal d1">
-      Veinte anos eligiendo con criterio las mejores propiedades de Buenos Aires.
-    </p>
-    <div class="hero-cta reveal d2">
-      <a href="#propiedades" class="link-arrow">Ver propiedades &rarr;</a>
+    <div class="hero-bg"></div>
+
+    <div class="hero-social">
+      <a href="#">IG</a>
+      <a href="#">IN</a>
+      <a href="#">FB</a>
     </div>
-    <div class="hero-stats reveal d3">
+
+    <div class="hero-content">
+      <p class="hero-label reveal">Buenos Aires &middot; Propiedades Premium</p>
+      <h1 class="hero-head reveal d1">
+        Encontramos<br><em>el lugar.</em>
+      </h1>
+      <p class="hero-sub reveal d2">
+        Veinte anos eligiendo con criterio las mejores propiedades de Buenos Aires.
+      </p>
+      <a href="#propiedades" class="hero-btn reveal d3">Ver propiedades &rarr;</a>
+    </div>
+
+    <div class="hero-stats">
       <div>
-        <span class="stat-n">340+</span>
+        <span class="stat-n" data-target="340" data-suffix="+">0</span>
         <span class="stat-l">Propiedades activas</span>
       </div>
       <div>
-        <span class="stat-n">20</span>
+        <span class="stat-n" data-target="20" data-suffix="">0</span>
         <span class="stat-l">Anos de experiencia</span>
       </div>
       <div>
-        <span class="stat-n">98%</span>
+        <span class="stat-n" data-target="98" data-suffix="%">0</span>
         <span class="stat-l">Satisfaccion de clientes</span>
       </div>
     </div>
@@ -742,68 +886,70 @@
   <section id="propiedades">
     <div class="props-head reveal">
       <div>
-        <span class="sec-num">01</span>
-        <p class="eyebrow">Seleccion exclusiva</p>
+        <p class="sec-label">01 &mdash; Seleccion exclusiva</p>
         <h2 class="sec-title">Propiedades <em>destacadas</em></h2>
       </div>
-      <a href="#" class="link-arrow">Ver todas &rarr;</a>
+      <a href="#" class="link-ghost">Ver todas &rarr;</a>
     </div>
     <div class="props-grid">
 
-      <div class="prop reveal d1">
+      <div class="prop reveal">
         <div class="prop-img-wrap">
           <img class="prop-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Residencia Palermo Chico">
-          <div class="prop-overlay">Ver propiedad &rarr;</div>
+          <div class="prop-overlay"><span>Ver propiedad &rarr;</span></div>
         </div>
-        <span class="prop-op">Venta</span>
-        <p class="prop-barrio">Palermo Chico</p>
-        <h3 class="prop-title">Residencia con jardin privado y terraza</h3>
-        <div class="prop-foot">
-          <span class="prop-specs">4 amb &middot; 320 m2 &middot; Cochera doble</span>
-          <span class="prop-price">USD 780.000</span>
+        <div class="prop-info">
+          <p class="prop-op">Venta</p>
+          <p class="prop-barrio">Palermo Chico</p>
+          <h3 class="prop-title">Residencia con jardin privado y terraza</h3>
+          <div class="prop-foot">
+            <span class="prop-specs">4 amb &middot; 320 m2 &middot; Cochera doble</span>
+            <span class="prop-price">USD 780.000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop reveal d1">
+        <div class="prop-img-wrap">
+          <img class="prop-img" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Penthouse Recoleta">
+          <div class="prop-overlay"><span>Ver propiedad &rarr;</span></div>
+        </div>
+        <div class="prop-info">
+          <p class="prop-op">Venta</p>
+          <p class="prop-barrio">Recoleta</p>
+          <h3 class="prop-title">Penthouse con terraza propia y vistas</h3>
+          <div class="prop-foot">
+            <span class="prop-specs">5 amb &middot; 240 m2 &middot; Terraza exclusiva</span>
+            <span class="prop-price">USD 1.250.000</span>
+          </div>
         </div>
       </div>
 
       <div class="prop reveal d2">
         <div class="prop-img-wrap">
-          <img class="prop-img" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Penthouse Recoleta">
-          <div class="prop-overlay">Ver propiedad &rarr;</div>
-        </div>
-        <span class="prop-op">Venta</span>
-        <p class="prop-barrio">Recoleta</p>
-        <h3 class="prop-title">Penthouse con terraza propia y vistas</h3>
-        <div class="prop-foot">
-          <span class="prop-specs">5 amb &middot; 240 m2 &middot; Terraza exclusiva</span>
-          <span class="prop-price">USD 1.250.000</span>
-        </div>
-      </div>
-
-      <div class="prop reveal d3">
-        <div class="prop-img-wrap">
           <img class="prop-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Departamento Belgrano R">
-          <div class="prop-overlay">Ver propiedad &rarr;</div>
+          <div class="prop-overlay"><span>Ver propiedad &rarr;</span></div>
         </div>
-        <span class="prop-op">Alquiler</span>
-        <p class="prop-barrio">Belgrano R</p>
-        <h3 class="prop-title">Departamento luminoso con amenities completos</h3>
-        <div class="prop-foot">
-          <span class="prop-specs">3 amb &middot; 105 m2 &middot; SUM y pileta</span>
-          <span class="prop-price">USD 1.800/mes</span>
+        <div class="prop-info">
+          <p class="prop-op">Alquiler</p>
+          <p class="prop-barrio">Belgrano R</p>
+          <h3 class="prop-title">Departamento luminoso con amenities completos</h3>
+          <div class="prop-foot">
+            <span class="prop-specs">3 amb &middot; 105 m2 &middot; SUM y pileta</span>
+            <span class="prop-price">USD 1.800/mes</span>
+          </div>
         </div>
       </div>
 
     </div>
   </section>
 
-  <hr class="rule">
-
   <!-- NOSOTROS -->
   <section id="nosotros">
     <div class="nosotros-grid">
       <div class="reveal">
-        <span class="sec-num">02</span>
-        <p class="eyebrow">Por que elegirnos</p>
-        <blockquote class="pull-quote" style="margin-top:1.5rem;">
+        <p class="sec-label">02 &mdash; Por que elegirnos</p>
+        <blockquote class="pull-quote">
           "La propiedad que buscas ya existe.<br><em>Solo hay que saber donde mirar."</em>
         </blockquote>
       </div>
@@ -835,12 +981,57 @@
     </div>
   </section>
 
-  <hr class="rule">
+  <!-- AMENITIES STRIP -->
+  <div class="amenities-wrap">
+    <div class="amenities-track">
+      <!-- first set -->
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=70" alt="Gimnasio">
+        <span class="amenity-label">Gimnasio</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=70" alt="Pileta">
+        <span class="amenity-label">Pileta</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=70" alt="Terraza">
+        <span class="amenity-label">Terraza</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=70" alt="SUM">
+        <span class="amenity-label">SUM</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70" alt="Cochera">
+        <span class="amenity-label">Cochera</span>
+      </div>
+      <!-- duplicate for seamless loop -->
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=70" alt="Gimnasio">
+        <span class="amenity-label">Gimnasio</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=70" alt="Pileta">
+        <span class="amenity-label">Pileta</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=70" alt="Terraza">
+        <span class="amenity-label">Terraza</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=70" alt="SUM">
+        <span class="amenity-label">SUM</span>
+      </div>
+      <div class="amenity">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70" alt="Cochera">
+        <span class="amenity-label">Cochera</span>
+      </div>
+    </div>
+  </div>
 
   <!-- TESTIMONIOS -->
   <section id="testimonios">
-    <span class="sec-num">03</span>
-    <p class="eyebrow reveal">Clientes que confian</p>
+    <p class="sec-label reveal">03 &mdash; Clientes que confian</p>
     <div class="test-grid">
 
       <div class="test-item reveal d1">
@@ -861,30 +1052,27 @@
     </div>
   </section>
 
-  <hr class="rule">
-
   <!-- CONTACTO -->
   <section id="contacto">
     <div class="contacto-grid">
 
       <div class="reveal">
-        <span class="sec-num">04</span>
-        <p class="eyebrow">Contacto</p>
+        <p class="sec-label">04 &mdash; Contacto</p>
         <h2 class="c-title">Hablemos<br><em>cuando quieras.</em></h2>
         <div class="c-list">
-          <div>
+          <div class="c-item">
             <p class="c-lbl">Direccion</p>
             <p class="c-val">Av. Santa Fe 2847, piso 4<br>Recoleta, Buenos Aires</p>
           </div>
-          <div>
+          <div class="c-item">
             <p class="c-lbl">Telefono</p>
             <p class="c-val">+54 11 4822-3400</p>
           </div>
-          <div>
+          <div class="c-item">
             <p class="c-lbl">Email</p>
             <p class="c-val">info@levipropiedades.com.ar</p>
           </div>
-          <div>
+          <div class="c-item">
             <p class="c-lbl">Horario de atencion</p>
             <p class="c-val">Lun a Vie: 9:00 - 18:30<br>Sabados: 10:00 - 14:00</p>
           </div>
@@ -922,7 +1110,7 @@
             <label>Mensaje</label>
             <textarea placeholder="Contanos que buscas: barrio, tipo de propiedad, presupuesto..."></textarea>
           </div>
-          <button type="submit" class="link-arrow" style="margin-top:.5rem;">Enviar consulta &rarr;</button>
+          <button type="submit" class="submit-btn">Enviar consulta &rarr;</button>
         </form>
       </div>
 
@@ -956,16 +1144,6 @@
           <li><a href="#">Novedades</a></li>
         </ul>
       </div>
-      <div>
-        <p class="footer-col-hd">Contacto</p>
-        <ul class="footer-links">
-          <li><a href="tel:+541148223400">+54 11 4822-3400</a></li>
-          <li><a href="mailto:info@levipropiedades.com.ar">info@levipropiedades.com.ar</a></li>
-          <li><a href="#">WhatsApp &rarr;</a></li>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">LinkedIn</a></li>
-        </ul>
-      </div>
     </div>
     <div class="footer-bottom">
       <p class="footer-copy">&copy; 2026 Levi Propiedades. Todos los derechos reservados.</p>
@@ -978,13 +1156,33 @@
   </footer>
 
   <script>
+    // CountUp animation on page load
+    function countUp(el) {
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      const duration = 2000;
+      const step = 16;
+      const increment = target / (duration / step);
+      let current = 0;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          el.textContent = target + suffix;
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(current) + suffix;
+        }
+      }, step);
+    }
+    document.querySelectorAll('.stat-n[data-target]').forEach(countUp);
+
+    // Scroll reveal
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
   </script>
 
 </body>
