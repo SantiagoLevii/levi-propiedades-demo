@@ -6,33 +6,34 @@
   <title>Levi Propiedades - Buenos Aires</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:     #0A0A09;
-      --bg2:    #050504;
-      --text:   #F0EBE0;
-      --muted:  #7A7468;
-      --gold:   #C8A96D;
-      --rule:   #1E1D1B;
-      --font-serif: 'Cormorant Garamond', Georgia, serif;
-      --font-sans:  'DM Sans', system-ui, sans-serif;
+      --bg:      #09090A;
+      --bg2:     #050504;
+      --text:    #F2EDE6;
+      --text2:   #F0EBE0;
+      --muted:   #7A7468;
+      --accent:  #8B7355;
+      --border:  rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.10);
+      --font:    'Plus Jakarta Sans', system-ui, sans-serif;
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font-sans);
+      font-family: var(--font);
       font-size: 15px;
-      font-weight: 300;
+      font-weight: 400;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    img { display: block; max-width: 100%; }
+    img { display: block; width: 100%; }
     a { color: inherit; text-decoration: none; }
     input, select, textarea, button { font-family: inherit; }
 
@@ -40,23 +41,26 @@
     nav {
       position: fixed;
       inset: 0 0 auto;
-      z-index: 100;
+      z-index: 200;
       display: flex;
       align-items: center;
-      padding: 1.25rem 3rem;
-      background: rgba(10,10,9,.88);
+      padding: 0 2.5rem;
+      height: 64px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(9,9,10,0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--rule);
     }
 
     .nav-logo {
       flex: 0 0 auto;
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-weight: 400;
-      font-style: italic;
-      letter-spacing: .01em;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       color: var(--text);
     }
 
@@ -64,30 +68,28 @@
       flex: 1;
       display: flex;
       justify-content: center;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
     }
     .nav-links a {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 400;
-      letter-spacing: .14em;
-      text-transform: uppercase;
       color: var(--muted);
-      transition: color .2s;
+      transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--text); }
 
     .nav-cta {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid var(--gold);
-      padding: .45rem 1.1rem;
-      transition: background .22s, color .22s;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      transition: background 0.25s, color 0.25s;
     }
-    .nav-cta:hover { background: var(--gold); color: var(--bg); }
+    .nav-cta:hover { background: var(--accent); color: var(--bg); }
 
     /* HERO */
     .hero {
@@ -96,14 +98,15 @@
       min-height: 640px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
     }
 
     .hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80');
+      background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=80');
       background-size: cover;
       background-position: center;
     }
@@ -111,371 +114,343 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(10,10,9,.95) 0%,
-        rgba(10,10,9,.6) 50%,
-        rgba(10,10,9,.2) 100%
-      );
+      background: rgba(9,9,10,0.65);
     }
 
-    .hero-social {
-      position: absolute;
-      right: 2.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      align-items: center;
-      z-index: 2;
-    }
-    .hero-social::before,
-    .hero-social::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 48px;
-      background: var(--muted);
-    }
-    .hero-social a {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      writing-mode: vertical-rl;
-      transition: color .2s;
-    }
-    .hero-social a:hover { color: var(--gold); }
-
-    .hero-content {
+    .hero-center {
       position: relative;
       z-index: 2;
-      padding: 0 4rem 4rem;
-      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 0 1.5rem;
     }
 
-    .hero-label {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .18em;
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.25rem;
-    }
-
-    .hero-head {
-      font-family: var(--font-serif);
-      font-size: clamp(3.5rem, 7vw, 6.5rem);
-      font-weight: 300;
-      line-height: .96;
-      letter-spacing: -.02em;
+      color: var(--accent);
       margin-bottom: 1.5rem;
     }
-    .hero-head em { font-style: italic; color: var(--gold); }
 
-    .hero-sub {
-      font-size: .875rem;
-      font-weight: 300;
-      color: var(--muted);
-      max-width: 340px;
-      line-height: 1.75;
-      margin-bottom: 2rem;
+    .hero-widget {
+      display: flex;
+      align-items: stretch;
+      background: var(--text);
+      width: 100%;
+      max-width: 720px;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
 
-    .hero-btn {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: .14em;
+    .hw-field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0.9rem 1.25rem;
+      border-right: 1px solid rgba(0,0,0,0.12);
+    }
+    .hw-field:last-of-type { border-right: none; }
+
+    .hw-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--bg);
-      background: var(--gold);
-      padding: .75rem 2rem;
-      transition: opacity .22s;
+      color: #6b6b6b;
+      margin-bottom: 0.25rem;
     }
-    .hero-btn:hover { opacity: .82; }
+    .hw-field select {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+
+    .hw-btn {
+      padding: 0 2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      white-space: nowrap;
+      border-radius: 0;
+      transition: opacity 0.25s;
+    }
+    .hw-btn:hover { opacity: 0.85; }
 
     .hero-stats {
       position: relative;
       z-index: 2;
       display: flex;
-      border-top: 1px solid var(--rule);
+      align-items: center;
+      gap: 0;
+      margin-top: 2rem;
     }
-    .hero-stats > div {
-      flex: 1;
-      padding: 1.5rem 2.5rem;
-      border-right: 1px solid var(--rule);
-    }
-    .hero-stats > div:last-child { border-right: none; }
-
-    .stat-n {
-      display: block;
-      font-family: var(--font-serif);
-      font-size: 2.25rem;
-      font-weight: 300;
-      line-height: 1;
-      color: var(--gold);
-      margin-bottom: .25rem;
-    }
-    .stat-l {
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* SEARCH */
-    .search-wrap {
-      border-top: 1px solid var(--gold);
-      border-bottom: 1px solid var(--rule);
-      background: #0D0D0B;
-    }
-    .search-inner { display: flex; align-items: stretch; }
-
-    .sf {
-      flex: 1;
-      padding: 1.1rem 1.75rem;
-      border-right: 1px solid var(--rule);
+    .hero-stat {
       display: flex;
       flex-direction: column;
-      gap: .3rem;
+      align-items: center;
+      padding: 0 2rem;
+      border-right: 1px solid rgba(255,255,255,0.18);
     }
-    .sf-lbl {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-    .sf select {
-      background: transparent;
-      border: none;
-      outline: none;
-      font-size: .9375rem;
-      font-weight: 300;
+    .hero-stat:last-child { border-right: none; }
+    .hs-n {
+      font-size: 1.5rem;
+      font-weight: 600;
       color: var(--text);
-      appearance: none;
-      -webkit-appearance: none;
-      cursor: pointer;
+      line-height: 1;
     }
-    .sf select option { background: #0D0D0B; }
-
-    .search-go {
-      padding: 0 2.5rem;
-      background: var(--gold);
-      color: var(--bg);
-      border: none;
+    .hs-l {
       font-size: 11px;
-      font-weight: 500;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity .22s;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      margin-top: 0.25rem;
+      text-align: center;
     }
-    .search-go:hover { opacity: .82; }
 
-    /* SECTIONS */
-    section { padding: 6rem 4rem; }
-
-    .sec-label {
+    .hero-strip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+      height: 40px;
       display: flex;
       align-items: center;
-      gap: .75rem;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
     }
-    .sec-label::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--gold);
+    .hero-strip-track {
+      display: flex;
+      white-space: nowrap;
+      animation: strip-scroll 22s linear infinite;
+    }
+    .hero-strip span {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      padding: 0 1.5rem;
+    }
+    @keyframes strip-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* SECTION SHARED */
+    .section { padding: 5rem 2.5rem; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
     }
 
     /* PROPIEDADES */
-    #propiedades { border-bottom: 1px solid var(--rule); }
+    #propiedades { border-bottom: 1px solid var(--border); }
 
     .props-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
-
-    .sec-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2.25rem, 4vw, 3.75rem);
-      font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -.02em;
-    }
-    .sec-title em { font-style: italic; color: var(--gold); }
-
     .link-ghost {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .14em;
-      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
       color: var(--muted);
-      border-bottom: 1px solid var(--rule);
-      padding-bottom: .15rem;
-      transition: color .2s, border-color .2s;
+      border-bottom: 1px solid var(--border2);
+      padding-bottom: 0.1rem;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .link-ghost:hover { color: var(--gold); border-color: var(--gold); }
+    .link-ghost:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* asymmetric grid: first card 2x wide */
-    .props-grid {
+    .bento-grid {
       display: grid;
-      grid-template-columns: 1.7fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
       gap: 1px;
-      background: var(--rule);
+      background: var(--border2);
     }
-    .props-grid .prop:first-child { grid-row: span 1; }
+    .bento-row2 {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border2);
+    }
 
-    .prop {
+    .pcard {
+      background: var(--bg);
       display: flex;
       flex-direction: column;
-      background: var(--bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      transition: transform 0.25s ease;
     }
+    .pcard:hover { transform: translateY(-2px); }
 
-    .prop-img-wrap {
+    .pcard-img-wrap {
       position: relative;
       overflow: hidden;
-      height: 300px;
+      flex-shrink: 0;
     }
-    .props-grid .prop:first-child .prop-img-wrap { height: 400px; }
+    .pcard-big .pcard-img-wrap { height: 380px; }
+    .pcard-sm  .pcard-img-wrap { height: 260px; }
+    .pcard-row2 .pcard-img-wrap { height: 220px; }
 
-    .prop-img {
+    .pcard-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform .7s ease;
+      transition: transform 0.3s ease;
     }
-    .prop:hover .prop-img { transform: scale(1.05); }
+    .pcard:hover .pcard-img { transform: scale(1.04); }
 
-    .prop-overlay {
+    .pcard-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,.55);
+      background: rgba(9,9,10,0.62);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
-      letter-spacing: .14em;
-      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--text);
       opacity: 0;
-      transition: opacity .3s ease;
+      transition: opacity 0.3s ease;
     }
-    .prop-overlay span { border-bottom: 1px solid var(--gold); padding-bottom: .2rem; color: var(--gold); }
-    .prop:hover .prop-overlay { opacity: 1; }
+    .pcard:hover .pcard-overlay { opacity: 1; }
 
-    .prop-info { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
-
-    .prop-op {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: .4rem;
-    }
-
-    .prop-barrio {
+    .pcard-body { padding: 1rem 1.1rem; flex: 1; display: flex; flex-direction: column; }
+    .pcard-op {
       font-size: 11px;
-      font-weight: 300;
-      letter-spacing: .1em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    .pcard-barrio {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: .3rem;
+      margin-bottom: 0.3rem;
     }
-
-    .prop-title {
-      font-family: var(--font-serif);
-      font-size: 1.3rem;
-      font-weight: 400;
-      line-height: 1.25;
-      margin-bottom: 1rem;
+    .pcard-title {
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
     }
-
-    .prop-foot {
+    .pcard-foot {
       margin-top: auto;
-      padding-top: .75rem;
-      border-top: 1px solid var(--rule);
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
     }
-    .prop-specs {
-      font-size: .8125rem;
+    .pcard-specs {
+      font-size: 12px;
       font-weight: 300;
       color: var(--muted);
     }
-    .prop-price {
-      font-family: var(--font-serif);
-      font-size: 1.3rem;
-      font-weight: 500;
-      color: var(--gold);
+    .pcard-price {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
     }
 
     /* NOSOTROS */
     #nosotros {
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .nosotros-grid {
+      padding: 0;
+      border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 6rem;
-      align-items: start;
+      grid-template-columns: 45% 55%;
+      min-height: 520px;
     }
 
-    .pull-quote {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 3.5vw, 3.25rem);
-      font-weight: 300;
-      line-height: 1.18;
-      letter-spacing: -.02em;
-      margin-top: 1.5rem;
+    .nos-img {
+      position: relative;
+      overflow: hidden;
     }
-    .pull-quote em { font-style: italic; color: var(--gold); }
+    .nos-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-    .diffs { margin-top: 1rem; }
-    .diff {
-      padding: 1.25rem 0;
-      border-top: 1px solid var(--rule);
-      display: grid;
-      grid-template-columns: 2.25rem 1fr;
-      gap: 1.25rem;
-      align-items: start;
+    .nos-content {
+      padding: 5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    .diff:last-child { border-bottom: 1px solid var(--rule); }
 
-    .diff-n {
-      font-family: var(--font-serif);
-      font-size: 1.1rem;
-      font-weight: 300;
-      color: var(--gold);
-      padding-top: .05rem;
-    }
-    .diff-title {
-      font-family: var(--font-serif);
-      font-size: 1.1rem;
+    .nos-quote {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-style: italic;
       font-weight: 400;
-      margin-bottom: .3rem;
-      line-height: 1.3;
+      line-height: 1.45;
+      color: var(--text2);
+      margin-bottom: 2rem;
     }
-    .diff-body {
-      font-size: .875rem;
+
+    .nos-items { display: flex; flex-direction: column; }
+    .nos-item {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1rem;
+      padding: 1.1rem 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+    }
+    .nos-item:last-child { border-bottom: 1px solid var(--border); }
+    .nos-n {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      padding-top: 0.1rem;
+    }
+    .nos-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      line-height: 1.35;
+    }
+    .nos-body {
+      font-size: 13px;
       font-weight: 300;
       color: var(--muted);
       line-height: 1.7;
@@ -483,134 +458,196 @@
 
     /* AMENITIES STRIP */
     .amenities-wrap {
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
       overflow: hidden;
-      position: relative;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
-
     .amenities-track {
       display: flex;
       width: max-content;
-      animation: scroll-strip 28s linear infinite;
+      animation: am-scroll 30s linear infinite;
     }
     .amenities-wrap:hover .amenities-track { animation-play-state: paused; }
-
-    @keyframes scroll-strip {
+    @keyframes am-scroll {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
     }
-
     .amenity {
-      position: relative;
       width: 280px;
-      height: 200px;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .amenity-img {
+      height: 200px;
       overflow: hidden;
     }
-    .amenity img {
+    .amenity-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(.55);
+      filter: brightness(0.7);
     }
-    .amenity-label {
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-      font-size: 10px;
+    .amenity-lbl {
+      font-size: 11px;
       font-weight: 500;
-      letter-spacing: .16em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text);
+      color: var(--muted);
+      text-align: center;
+      padding: 0.75rem 0.5rem;
+      border-right: 1px solid var(--border);
     }
 
     /* TESTIMONIOS */
-    #testimonios { border-bottom: 1px solid var(--rule); }
-
+    #testimonios { border-bottom: 1px solid var(--border); }
     .test-grid {
       display: grid;
       grid-template-columns: repeat(3,1fr);
       gap: 0;
       margin-top: 2rem;
     }
-
     .test-item {
-      padding: 2rem 2rem 0 0;
-      border-top: 1px solid var(--rule);
+      padding: 2rem 2rem 2rem 0;
     }
-    .test-item:not(:first-child) { padding-left: 2rem; border-left: 1px solid var(--rule); }
-
+    .test-item:not(:first-child) {
+      padding-left: 2rem;
+      border-left: 1px solid var(--border);
+    }
     .test-quote {
-      font-family: var(--font-serif);
-      font-size: 1.35rem;
-      font-weight: 300;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.15rem;
       font-style: italic;
-      line-height: 1.55;
-      letter-spacing: -.01em;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text2);
       margin-bottom: 1.25rem;
     }
-
     .test-author {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--gold);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .test-loc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
     }
 
-    /* CONTACTO */
-    #contacto { border-bottom: 1px solid var(--rule); }
-
-    .contacto-grid {
+    /* TASACIONES */
+    #tasaciones { border-bottom: 1px solid var(--border); }
+    .tas-grid {
       display: grid;
-      grid-template-columns: 1fr 1.4fr;
+      grid-template-columns: 1fr 1fr;
       gap: 5rem;
       align-items: start;
     }
-
-    .c-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2.25rem, 4vw, 3.75rem);
+    .tas-title {
+      font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .tas-desc {
+      font-size: 14px;
       font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -.02em;
-      margin-top: 1.25rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+    .tas-benefits { display: flex; flex-direction: column; gap: 0.6rem; }
+    .tas-benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text2);
+    }
+    .tas-bullet {
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+      font-size: 16px;
+    }
+
+    .tas-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tas-step {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem 0.5rem;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s;
+    }
+    .tas-step.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* CONTACTO */
+    #contacto { border-bottom: 1px solid var(--border); }
+    .con-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .con-title {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
       margin-bottom: 2rem;
     }
-    .c-title em { font-style: italic; color: var(--gold); }
-
-    .c-list { display: flex; flex-direction: column; }
-    .c-item {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--rule);
+    .con-items { display: flex; flex-direction: column; }
+    .con-item {
       display: flex;
-      flex-direction: column;
-      gap: .25rem;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
     }
-    .c-lbl {
-      font-size: 10px;
+    .con-icon {
+      font-size: 16px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .con-lbl {
+      font-size: 11px;
       font-weight: 500;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-    .c-val {
-      font-size: .9375rem;
-      font-weight: 300;
-      color: var(--text);
-      line-height: 1.55;
-    }
-
-    .ff { margin-bottom: 1.35rem; }
-    .ff label {
-      display: block;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .16em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: .4rem;
+      margin-bottom: 0.2rem;
+    }
+    .con-val {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+
+    .ff { margin-bottom: 1.25rem; }
+    .ff label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
     }
     .ff input,
     .ff select,
@@ -618,100 +655,119 @@
       width: 100%;
       background: transparent;
       border: none;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
       outline: none;
-      padding: .55rem 0;
-      font-size: .9375rem;
-      font-weight: 300;
+      padding: 0.55rem 0;
+      font-size: 14px;
+      font-weight: 400;
       color: var(--text);
       appearance: none;
       -webkit-appearance: none;
-      transition: border-color .3s ease;
+      transition: border-color 0.3s ease;
+      font-family: var(--font);
     }
     .ff input:focus,
     .ff select:focus,
-    .ff textarea:focus { border-bottom-color: var(--gold); }
+    .ff textarea:focus { border-bottom-color: var(--accent); }
     .ff input::placeholder,
     .ff textarea::placeholder { color: var(--muted); }
-    .ff select option { background: var(--bg); }
-    .ff textarea { height: 88px; resize: none; }
+    .ff select option { background: var(--bg); color: var(--text); }
+    .ff textarea { height: 90px; resize: none; }
     .ff-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
     }
-
     .submit-btn {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--gold);
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--accent);
+      color: #fff;
       border: none;
-      padding: .75rem 2rem;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
       cursor: pointer;
-      margin-top: .5rem;
-      transition: opacity .22s;
+      border-radius: 4px;
+      transition: opacity 0.25s;
+      margin-top: 0.25rem;
+      font-family: var(--font);
     }
-    .submit-btn:hover { opacity: .82; }
+    .submit-btn:hover { opacity: 0.85; }
+
+    /* WHATSAPP */
+    .wa-btn {
+      position: fixed;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1.1rem 0.65rem 0.85rem;
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s;
+      text-decoration: none;
+    }
+    .wa-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .wa-icon { flex-shrink: 0; }
 
     /* FOOTER */
     footer {
       background: var(--bg2);
-      border-top: 1px solid var(--gold);
-      padding: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 3.5rem 2.5rem 2rem;
     }
-
     .footer-cols {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 2rem;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
       padding-bottom: 2rem;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--border);
     }
-
     .footer-logo {
-      display: block;
-      font-family: var(--font-serif);
-      font-size: 1.35rem;
-      font-weight: 400;
-      font-style: italic;
+      font-size: 1rem;
+      font-weight: 600;
       color: var(--text);
-      margin-bottom: .75rem;
+      display: block;
+      margin-bottom: 0.6rem;
     }
     .footer-blurb {
       font-size: 12px;
       font-weight: 300;
       color: var(--muted);
-      line-height: 1.75;
-      max-width: 240px;
+      line-height: 2;
+      max-width: 220px;
     }
-
     .footer-col-hd {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .18em;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--text);
       margin-bottom: 1rem;
     }
     .footer-links {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: .6rem;
+      gap: 0.1rem;
     }
     .footer-links a {
       font-size: 12px;
       font-weight: 300;
       color: var(--muted);
-      transition: color .2s;
+      line-height: 2;
+      transition: color 0.2s;
     }
     .footer-links a:hover { color: var(--text); }
-
     .footer-bottom {
       display: flex;
       justify-content: space-between;
@@ -722,359 +778,424 @@
       font-weight: 300;
       color: var(--muted);
     }
-    .footer-socials {
-      display: flex;
-      gap: 2rem;
-    }
-    .footer-socials a {
-      font-size: 11px;
+    .footer-credit {
+      font-size: 12px;
       font-weight: 400;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      transition: color .2s;
+      color: var(--accent);
     }
-    .footer-socials a:hover { color: var(--gold); }
 
     /* REVEAL */
     .reveal {
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity .75s ease, transform .75s ease;
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .d1 { transition-delay: .1s; }
-    .d2 { transition-delay: .22s; }
-    .d3 { transition-delay: .36s; }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
 
     /* MOBILE */
     @media (max-width: 768px) {
-      nav { padding: .85rem 1.5rem; }
+      nav { padding: 0 1.25rem; }
       .nav-links { display: none; }
 
-      .hero-content { padding: 0 1.5rem 3rem; }
-      .hero-social { display: none; }
-      .hero-stats { flex-wrap: wrap; }
-      .hero-stats > div { padding: 1rem 1.5rem; border-right: none; border-bottom: 1px solid var(--rule); }
-      .hero-stats > div:last-child { border-bottom: none; }
+      .hero-widget { flex-direction: column; max-width: 100%; }
+      .hw-field { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
+      .hw-btn { padding: 1rem; }
+      .hero-stat { padding: 0 1.25rem; }
+      .hs-n { font-size: 1.25rem; }
 
-      section { padding: 4rem 1.5rem; }
+      .section { padding: 3.5rem 1.25rem; }
 
-      .search-inner { flex-direction: column; }
-      .sf { border-right: none; border-bottom: 1px solid var(--rule); }
-      .search-go { padding: 1rem; text-align: center; }
+      .props-head { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .bento-row2 { grid-template-columns: 1fr; }
+      .pcard-big .pcard-img-wrap,
+      .pcard-sm .pcard-img-wrap,
+      .pcard-row2 .pcard-img-wrap { height: 240px; }
 
-      .props-head { flex-direction: column; align-items: flex-start; gap: .75rem; }
-      .props-grid { grid-template-columns: 1fr; gap: 1px; }
-      .props-grid .prop:first-child .prop-img-wrap { height: 300px; }
-
-      .nosotros-grid { grid-template-columns: 1fr; gap: 3rem; }
+      #nosotros { grid-template-columns: 1fr; }
+      .nos-img { height: 280px; }
+      .nos-content { padding: 2.5rem 1.25rem; }
 
       .test-grid { grid-template-columns: 1fr; }
-      .test-item { padding: 1.5rem 0 0 0; }
-      .test-item:not(:first-child) { padding-left: 0; border-left: none; }
+      .test-item { padding: 1.5rem 0; }
+      .test-item:not(:first-child) { padding-left: 0; border-left: none; border-top: 1px solid var(--border); }
 
-      .contacto-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .tas-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .con-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .ff-row { grid-template-columns: 1fr; }
 
-      footer { padding: 2rem 1.5rem; }
-      .footer-cols { grid-template-columns: 1fr 1fr; gap: 2rem; }
-      .footer-bottom { flex-direction: column; gap: .75rem; text-align: center; }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      .wa-btn span { display: none; }
+      .wa-btn { padding: 0.75rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
+  <nav id="main-nav">
     <a href="#inicio" class="nav-logo">Levi Propiedades</a>
     <ul class="nav-links">
       <li><a href="#propiedades">Propiedades</a></li>
       <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#tasaciones">Tasaciones</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <a href="#contacto" class="nav-cta">Consultar</a>
   </nav>
 
-  <!-- HERO -->
   <section class="hero" id="inicio">
     <div class="hero-bg"></div>
 
-    <div class="hero-social">
-      <a href="#">IG</a>
-      <a href="#">IN</a>
-      <a href="#">FB</a>
+    <div class="hero-center">
+      <p class="hero-eyebrow">Encontrá tu próxima propiedad</p>
+
+      <div class="hero-widget">
+        <div class="hw-field">
+          <span class="hw-lbl">Operación</span>
+          <select>
+            <option>Comprar</option>
+            <option>Alquilar</option>
+          </select>
+        </div>
+        <div class="hw-field">
+          <span class="hw-lbl">Ubicación</span>
+          <select>
+            <option>Todos los barrios</option>
+            <option>Palermo</option>
+            <option>Recoleta</option>
+            <option>Belgrano</option>
+            <option>Núñez</option>
+            <option>Puerto Madero</option>
+            <option>San Telmo</option>
+          </select>
+        </div>
+        <div class="hw-field">
+          <span class="hw-lbl">Tipo</span>
+          <select>
+            <option>Cualquier tipo</option>
+            <option>Departamento</option>
+            <option>Casa</option>
+            <option>PH</option>
+            <option>Oficina</option>
+          </select>
+        </div>
+        <button class="hw-btn">Buscar</button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hs-n" data-target="340" data-suffix="+">0</span>
+          <span class="hs-l">Propiedades activas</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hs-n" data-target="20" data-suffix=" años">0</span>
+          <span class="hs-l">De experiencia</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hs-n" data-target="98" data-suffix="%">0</span>
+          <span class="hs-l">Satisfacción</span>
+        </div>
+      </div>
     </div>
 
-    <div class="hero-content">
-      <p class="hero-label reveal">Buenos Aires &middot; Propiedades Premium</p>
-      <h1 class="hero-head reveal d1">
-        Encontramos<br><em>el lugar.</em>
-      </h1>
-      <p class="hero-sub reveal d2">
-        Veinte anos eligiendo con criterio las mejores propiedades de Buenos Aires.
-      </p>
-      <a href="#propiedades" class="hero-btn reveal d3">Ver propiedades &rarr;</a>
-    </div>
-
-    <div class="hero-stats">
-      <div>
-        <span class="stat-n" data-target="340" data-suffix="+">0</span>
-        <span class="stat-l">Propiedades activas</span>
-      </div>
-      <div>
-        <span class="stat-n" data-target="20" data-suffix="">0</span>
-        <span class="stat-l">Anos de experiencia</span>
-      </div>
-      <div>
-        <span class="stat-n" data-target="98" data-suffix="%">0</span>
-        <span class="stat-l">Satisfaccion de clientes</span>
+    <div class="hero-strip">
+      <div class="hero-strip-track">
+        <span>Palermo</span><span>·</span>
+        <span>Recoleta</span><span>·</span>
+        <span>Belgrano</span><span>·</span>
+        <span>Núñez</span><span>·</span>
+        <span>Puerto Madero</span><span>·</span>
+        <span>San Telmo</span><span>·</span>
+        <span>Palermo</span><span>·</span>
+        <span>Recoleta</span><span>·</span>
+        <span>Belgrano</span><span>·</span>
+        <span>Núñez</span><span>·</span>
+        <span>Puerto Madero</span><span>·</span>
+        <span>San Telmo</span><span>·</span>
       </div>
     </div>
   </section>
 
-  <!-- SEARCH -->
-  <div class="search-wrap">
-    <div class="search-inner">
-      <div class="sf">
-        <span class="sf-lbl">Operacion</span>
-        <select>
-          <option>Comprar</option>
-          <option>Alquilar</option>
-        </select>
-      </div>
-      <div class="sf">
-        <span class="sf-lbl">Barrio</span>
-        <select>
-          <option>Todos los barrios</option>
-          <option>Palermo</option>
-          <option>Recoleta</option>
-          <option>Belgrano</option>
-          <option>Nunez</option>
-          <option>San Telmo</option>
-          <option>Puerto Madero</option>
-          <option>Caballito</option>
-        </select>
-      </div>
-      <div class="sf">
-        <span class="sf-lbl">Tipo</span>
-        <select>
-          <option>Cualquier tipo</option>
-          <option>Departamento</option>
-          <option>Casa</option>
-          <option>PH</option>
-          <option>Local comercial</option>
-          <option>Oficina</option>
-        </select>
-      </div>
-      <div class="sf">
-        <span class="sf-lbl">Presupuesto</span>
-        <select>
-          <option>Cualquier precio</option>
-          <option>Hasta USD 150.000</option>
-          <option>USD 150.000 - 300.000</option>
-          <option>USD 300.000 - 600.000</option>
-          <option>Mas de USD 600.000</option>
-        </select>
-      </div>
-      <button class="search-go">Buscar</button>
-    </div>
-  </div>
-
-  <!-- PROPIEDADES -->
-  <section id="propiedades">
+  <section class="section" id="propiedades">
     <div class="props-head reveal">
       <div>
-        <p class="sec-label">01 &mdash; Seleccion exclusiva</p>
-        <h2 class="sec-title">Propiedades <em>destacadas</em></h2>
+        <p class="section-label">01 — Propiedades destacadas</p>
       </div>
-      <a href="#" class="link-ghost">Ver todas &rarr;</a>
+      <a href="#" class="link-ghost">Ver todas las propiedades &rarr;</a>
     </div>
-    <div class="props-grid">
 
-      <div class="prop reveal">
-        <div class="prop-img-wrap">
-          <img class="prop-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Residencia Palermo Chico">
-          <div class="prop-overlay"><span>Ver propiedad &rarr;</span></div>
+    <div class="bento-grid">
+      <div class="pcard pcard-big reveal">
+        <div class="pcard-img-wrap">
+          <img class="pcard-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80" alt="Residencia Palermo Chico">
+          <div class="pcard-overlay">Ver propiedad &rarr;</div>
         </div>
-        <div class="prop-info">
-          <p class="prop-op">Venta</p>
-          <p class="prop-barrio">Palermo Chico</p>
-          <h3 class="prop-title">Residencia con jardin privado y terraza</h3>
-          <div class="prop-foot">
-            <span class="prop-specs">4 amb &middot; 320 m2 &middot; Cochera doble</span>
-            <span class="prop-price">USD 780.000</span>
+        <div class="pcard-body">
+          <p class="pcard-op">Venta</p>
+          <p class="pcard-barrio">Palermo Chico</p>
+          <h3 class="pcard-title">Residencia con jardín privado y terraza de autor</h3>
+          <div class="pcard-foot">
+            <span class="pcard-specs">4 amb &middot; 320 m² &middot; Cochera doble</span>
+            <span class="pcard-price">USD 780.000</span>
           </div>
         </div>
       </div>
 
-      <div class="prop reveal d1">
-        <div class="prop-img-wrap">
-          <img class="prop-img" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Penthouse Recoleta">
-          <div class="prop-overlay"><span>Ver propiedad &rarr;</span></div>
+      <div class="pcard pcard-sm reveal d1">
+        <div class="pcard-img-wrap">
+          <img class="pcard-img" loading="lazy" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80" alt="Penthouse Recoleta">
+          <div class="pcard-overlay">Ver propiedad &rarr;</div>
         </div>
-        <div class="prop-info">
-          <p class="prop-op">Venta</p>
-          <p class="prop-barrio">Recoleta</p>
-          <h3 class="prop-title">Penthouse con terraza propia y vistas</h3>
-          <div class="prop-foot">
-            <span class="prop-specs">5 amb &middot; 240 m2 &middot; Terraza exclusiva</span>
-            <span class="prop-price">USD 1.250.000</span>
+        <div class="pcard-body">
+          <p class="pcard-op">Venta</p>
+          <p class="pcard-barrio">Recoleta</p>
+          <h3 class="pcard-title">Penthouse con terraza propia y vistas al río</h3>
+          <div class="pcard-foot">
+            <span class="pcard-specs">5 amb &middot; 240 m² &middot; Terraza</span>
+            <span class="pcard-price">USD 1.250.000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento-row2">
+      <div class="pcard pcard-row2 reveal d1">
+        <div class="pcard-img-wrap">
+          <img class="pcard-img" loading="lazy" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80" alt="Departamento Belgrano R">
+          <div class="pcard-overlay">Ver propiedad &rarr;</div>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-op">Alquiler</p>
+          <p class="pcard-barrio">Belgrano R</p>
+          <h3 class="pcard-title">Departamento luminoso con amenities completos</h3>
+          <div class="pcard-foot">
+            <span class="pcard-specs">3 amb &middot; 105 m² &middot; SUM</span>
+            <span class="pcard-price">USD 1.800/mes</span>
           </div>
         </div>
       </div>
 
-      <div class="prop reveal d2">
-        <div class="prop-img-wrap">
-          <img class="prop-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Departamento Belgrano R">
-          <div class="prop-overlay"><span>Ver propiedad &rarr;</span></div>
+      <div class="pcard pcard-row2 reveal d2">
+        <div class="pcard-img-wrap">
+          <img class="pcard-img" loading="lazy" src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200&q=80" alt="Casa Núñez">
+          <div class="pcard-overlay">Ver propiedad &rarr;</div>
         </div>
-        <div class="prop-info">
-          <p class="prop-op">Alquiler</p>
-          <p class="prop-barrio">Belgrano R</p>
-          <h3 class="prop-title">Departamento luminoso con amenities completos</h3>
-          <div class="prop-foot">
-            <span class="prop-specs">3 amb &middot; 105 m2 &middot; SUM y pileta</span>
-            <span class="prop-price">USD 1.800/mes</span>
+        <div class="pcard-body">
+          <p class="pcard-op">Venta</p>
+          <p class="pcard-barrio">Núñez</p>
+          <h3 class="pcard-title">Casa moderna con piscina y jardín en lote propio</h3>
+          <div class="pcard-foot">
+            <span class="pcard-specs">5 amb &middot; 410 m² &middot; Pileta</span>
+            <span class="pcard-price">USD 940.000</span>
           </div>
         </div>
       </div>
 
+      <div class="pcard pcard-row2 reveal d3">
+        <div class="pcard-img-wrap">
+          <img class="pcard-img" loading="lazy" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80" alt="PH Puerto Madero">
+          <div class="pcard-overlay">Ver propiedad &rarr;</div>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-op">Alquiler</p>
+          <p class="pcard-barrio">Puerto Madero</p>
+          <h3 class="pcard-title">PH dúplex frente al río con terraza privada</h3>
+          <div class="pcard-foot">
+            <span class="pcard-specs">4 amb &middot; 180 m² &middot; Terraza</span>
+            <span class="pcard-price">USD 3.200/mes</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- NOSOTROS -->
   <section id="nosotros">
-    <div class="nosotros-grid">
-      <div class="reveal">
-        <p class="sec-label">02 &mdash; Por que elegirnos</p>
-        <blockquote class="pull-quote">
-          "La propiedad que buscas ya existe.<br><em>Solo hay que saber donde mirar."</em>
-        </blockquote>
-      </div>
-      <div class="reveal d2">
-        <div class="diffs">
-          <div class="diff">
-            <span class="diff-n">01</span>
-            <div>
-              <p class="diff-title">Asesoria personalizada, sin presion</p>
-              <p class="diff-body">Nos tomamos el tiempo de entender que buscas antes de mostrarte una sola propiedad. Tu ritmo, tus prioridades.</p>
-            </div>
+    <div class="nos-img">
+      <img loading="lazy" src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=1200&q=80" alt="Asesoría personalizada">
+    </div>
+    <div class="nos-content reveal">
+      <p class="section-label">02 — Por qué elegirnos</p>
+      <p class="nos-quote">"No vendemos propiedades. Encontramos el lugar donde vas a vivir tu próxima etapa."</p>
+      <div class="nos-items">
+        <div class="nos-item">
+          <span class="nos-n">01</span>
+          <div>
+            <p class="nos-title">Asesoría personalizada, sin presión</p>
+            <p class="nos-body">Nos tomamos el tiempo de entender qué buscás antes de mostrarte una sola propiedad. Tu ritmo, tus prioridades.</p>
           </div>
-          <div class="diff">
-            <span class="diff-n">02</span>
-            <div>
-              <p class="diff-title">Acceso a stock exclusivo off-market</p>
-              <p class="diff-body">El 30% de nuestras operaciones se cierran con propiedades que nunca aparecen en portales publicos. La red importa.</p>
-            </div>
+        </div>
+        <div class="nos-item">
+          <span class="nos-n">02</span>
+          <div>
+            <p class="nos-title">Acceso a stock exclusivo off-market</p>
+            <p class="nos-body">El 30% de nuestras operaciones se cierran con propiedades que nunca aparecen en portales públicos. La red importa.</p>
           </div>
-          <div class="diff">
-            <span class="diff-n">03</span>
-            <div>
-              <p class="diff-title">Acompanamiento legal y financiero total</p>
-              <p class="diff-body">Escribanos, tasaciones, creditos: gestionamos todo el proceso para que vos solo firmes con seguridad.</p>
-            </div>
+        </div>
+        <div class="nos-item">
+          <span class="nos-n">03</span>
+          <div>
+            <p class="nos-title">Acompañamiento legal y financiero total</p>
+            <p class="nos-body">Escribanos, tasaciones, créditos: gestionamos todo el proceso para que vos solo firmes con seguridad.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- AMENITIES STRIP -->
   <div class="amenities-wrap">
     <div class="amenities-track">
-      <!-- first set -->
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=70" alt="Gimnasio">
-        <span class="amenity-label">Gimnasio</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=70" alt="Terrazas"></div>
+        <span class="amenity-lbl">Terrazas</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=70" alt="Pileta">
-        <span class="amenity-label">Pileta</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=70" alt="Amenities"></div>
+        <span class="amenity-lbl">Amenities</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=70" alt="Terraza">
-        <span class="amenity-label">Terraza</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=400&q=70" alt="Luminosidad"></div>
+        <span class="amenity-lbl">Luminosidad</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=70" alt="SUM">
-        <span class="amenity-label">SUM</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=70" alt="Diseño"></div>
+        <span class="amenity-lbl">Diseño</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70" alt="Cochera">
-        <span class="amenity-label">Cochera</span>
-      </div>
-      <!-- duplicate for seamless loop -->
-      <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=70" alt="Gimnasio">
-        <span class="amenity-label">Gimnasio</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=400&q=70" alt="Ubicación Premium"></div>
+        <span class="amenity-lbl">Ubicación Premium</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=70" alt="Pileta">
-        <span class="amenity-label">Pileta</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=70" alt="Terrazas"></div>
+        <span class="amenity-lbl">Terrazas</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=70" alt="Terraza">
-        <span class="amenity-label">Terraza</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=70" alt="Amenities"></div>
+        <span class="amenity-lbl">Amenities</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=70" alt="SUM">
-        <span class="amenity-label">SUM</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=400&q=70" alt="Luminosidad"></div>
+        <span class="amenity-lbl">Luminosidad</span>
       </div>
       <div class="amenity">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70" alt="Cochera">
-        <span class="amenity-label">Cochera</span>
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=70" alt="Diseño"></div>
+        <span class="amenity-lbl">Diseño</span>
+      </div>
+      <div class="amenity">
+        <div class="amenity-img"><img loading="lazy" src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=400&q=70" alt="Ubicación Premium"></div>
+        <span class="amenity-lbl">Ubicación Premium</span>
       </div>
     </div>
   </div>
 
-  <!-- TESTIMONIOS -->
-  <section id="testimonios">
-    <p class="sec-label reveal">03 &mdash; Clientes que confian</p>
+  <section class="section" id="testimonios">
+    <p class="section-label reveal">03 — Testimonios</p>
     <div class="test-grid">
-
       <div class="test-item reveal d1">
-        <p class="test-quote">"Llevaba un ano buscando sin resultados. Con Levi Propiedades encontre el departamento ideal en menos de un mes."</p>
-        <p class="test-author">Valentina Moreno &mdash; Palermo Soho</p>
+        <p class="test-quote">"Llevaba un año buscando sin resultados. Con Levi Propiedades encontré el departamento ideal en menos de un mes."</p>
+        <p class="test-author">Valentina Moreno</p>
+        <p class="test-loc">Palermo Soho</p>
       </div>
-
       <div class="test-item reveal d2">
-        <p class="test-quote">"Vendimos la casa familiar en tiempo record y al precio que pediamos. La gestion fue impecable de principio a fin."</p>
-        <p class="test-author">Rodrigo y Patricia Suarez &mdash; Belgrano R</p>
+        <p class="test-quote">"Vendimos la casa familiar en tiempo récord y al precio que pedíamos. La gestión fue impecable de principio a fin."</p>
+        <p class="test-author">Rodrigo y Patricia Suárez</p>
+        <p class="test-loc">Belgrano R</p>
       </div>
-
       <div class="test-item reveal d3">
-        <p class="test-quote">"El equipo me presento tres oportunidades off-market en Recoleta que no estaban en ningun portal. Cerre dos ese mismo mes."</p>
-        <p class="test-author">Marcelo Ibarra &mdash; Recoleta</p>
+        <p class="test-quote">"El equipo me presentó tres oportunidades off-market en Recoleta que no estaban en ningún portal. Cerré dos ese mismo mes."</p>
+        <p class="test-author">Marcelo Ibarra</p>
+        <p class="test-loc">Recoleta</p>
       </div>
-
     </div>
   </section>
 
-  <!-- CONTACTO -->
-  <section id="contacto">
-    <div class="contacto-grid">
-
+  <section class="section" id="tasaciones">
+    <div class="tas-grid">
       <div class="reveal">
-        <p class="sec-label">04 &mdash; Contacto</p>
-        <h2 class="c-title">Hablemos<br><em>cuando quieras.</em></h2>
-        <div class="c-list">
-          <div class="c-item">
-            <p class="c-lbl">Direccion</p>
-            <p class="c-val">Av. Santa Fe 2847, piso 4<br>Recoleta, Buenos Aires</p>
+        <p class="section-label">04 — Tasá tu propiedad</p>
+        <h2 class="tas-title">¿Querés saber cuánto vale tu propiedad?</h2>
+        <p class="tas-desc">Nuestros asesores realizan una tasación profesional gratuita basada en datos reales del mercado. Sin compromiso.</p>
+        <div class="tas-benefits">
+          <div class="tas-benefit">
+            <span class="tas-bullet">&bull;</span>
+            <span>Tasación basada en operaciones recientes comparables</span>
           </div>
-          <div class="c-item">
-            <p class="c-lbl">Telefono</p>
-            <p class="c-val">+54 11 4822-3400</p>
+          <div class="tas-benefit">
+            <span class="tas-bullet">&bull;</span>
+            <span>Informe detallado con análisis del barrio y tendencias</span>
           </div>
-          <div class="c-item">
-            <p class="c-lbl">Email</p>
-            <p class="c-val">info@levipropiedades.com.ar</p>
+          <div class="tas-benefit">
+            <span class="tas-bullet">&bull;</span>
+            <span>Sin costo, sin compromiso de publicación</span>
           </div>
-          <div class="c-item">
-            <p class="c-lbl">Horario de atencion</p>
-            <p class="c-val">Lun a Vie: 9:00 - 18:30<br>Sabados: 10:00 - 14:00</p>
+        </div>
+      </div>
+
+      <div class="reveal d2">
+        <div class="tas-steps">
+          <div class="tas-step active">Paso 1: Datos</div>
+          <div class="tas-step">Paso 2: Propiedad</div>
+          <div class="tas-step">Paso 3: Contacto</div>
+        </div>
+        <form onsubmit="return false;">
+          <div class="ff-row">
+            <div class="ff">
+              <label>Nombre</label>
+              <input type="text" placeholder="Juan Pérez">
+            </div>
+            <div class="ff">
+              <label>Teléfono</label>
+              <input type="tel" placeholder="+54 11 XXXX-XXXX">
+            </div>
+          </div>
+          <div class="ff">
+            <label>Email</label>
+            <input type="email" placeholder="tu@email.com">
+          </div>
+          <button type="submit" class="submit-btn">Siguiente &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacto">
+    <div class="con-grid">
+      <div class="reveal">
+        <p class="section-label">05 — Contacto</p>
+        <h2 class="con-title">Hablemos cuando quieras.</h2>
+        <div class="con-items">
+          <div class="con-item">
+            <span class="con-icon">&#9678;</span>
+            <div>
+              <p class="con-lbl">Dirección</p>
+              <p class="con-val">Av. Santa Fe 2847, piso 4<br>Recoleta, Buenos Aires</p>
+            </div>
+          </div>
+          <div class="con-item">
+            <span class="con-icon">&#9990;</span>
+            <div>
+              <p class="con-lbl">Teléfono</p>
+              <p class="con-val">+54 11 4822-3400</p>
+            </div>
+          </div>
+          <div class="con-item">
+            <span class="con-icon">&#9993;</span>
+            <div>
+              <p class="con-lbl">Email</p>
+              <p class="con-val">info@levipropiedades.com.ar</p>
+            </div>
+          </div>
+          <div class="con-item">
+            <span class="con-icon">&#9719;</span>
+            <div>
+              <p class="con-lbl">Horario</p>
+              <p class="con-val">Lun a Vie: 9:00 - 18:30<br>Sábados: 10:00 - 14:00</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1084,10 +1205,10 @@
           <div class="ff-row">
             <div class="ff">
               <label>Nombre completo</label>
-              <input type="text" placeholder="Juan Perez">
+              <input type="text" placeholder="Juan Pérez">
             </div>
             <div class="ff">
-              <label>Telefono</label>
+              <label>Teléfono</label>
               <input type="tel" placeholder="+54 11 XXXX-XXXX">
             </div>
           </div>
@@ -1102,22 +1223,20 @@
               <option>Quiero comprar</option>
               <option>Quiero vender</option>
               <option>Quiero alquilar</option>
-              <option>Quiero poner en alquiler</option>
-              <option>Inversion inmobiliaria</option>
+              <option>Tasación gratuita</option>
+              <option>Inversión inmobiliaria</option>
             </select>
           </div>
           <div class="ff">
             <label>Mensaje</label>
-            <textarea placeholder="Contanos que buscas: barrio, tipo de propiedad, presupuesto..."></textarea>
+            <textarea placeholder="Contanos qué buscás: barrio, tipo de propiedad, presupuesto..."></textarea>
           </div>
-          <button type="submit" class="submit-btn">Enviar consulta &rarr;</button>
+          <button type="submit" class="submit-btn">Enviar consulta</button>
         </form>
       </div>
-
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-cols">
       <div>
@@ -1137,46 +1256,56 @@
       <div>
         <p class="footer-col-hd">Empresa</p>
         <ul class="footer-links">
-          <li><a href="#">Quienes somos</a></li>
+          <li><a href="#">Quiénes somos</a></li>
           <li><a href="#">Nuestro equipo</a></li>
           <li><a href="#">Tasaciones</a></li>
           <li><a href="#">Publicar propiedad</a></li>
           <li><a href="#">Novedades</a></li>
         </ul>
       </div>
+      <div>
+        <p class="footer-col-hd">Contacto</p>
+        <ul class="footer-links">
+          <li><a href="tel:+541148223400">+54 11 4822-3400</a></li>
+          <li><a href="mailto:info@levipropiedades.com.ar">info@levipropiedades.com.ar</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
     </div>
     <div class="footer-bottom">
       <p class="footer-copy">&copy; 2026 Levi Propiedades. Todos los derechos reservados.</p>
-      <div class="footer-socials">
-        <a href="#">Instagram</a>
-        <a href="#">Facebook</a>
-        <a href="#">LinkedIn</a>
-      </div>
+      <p class="footer-credit">Diseñado por Levi Studio</p>
     </div>
   </footer>
 
+  <a class="wa-btn" href="https://wa.me/541148223400?text=Hola%2C%20vi%20su%20sitio%20web%20y%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20propiedades." target="_blank" rel="noopener">
+    <svg class="wa-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20.52 3.449C18.24 1.245 15.24 0.005 12.045 0 5.463 0 0.104 5.334 0.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896.002-3.176-1.24-6.165-3.48-8.45zm-8.475 18.301h-.005c-1.774-.001-3.513-.474-5.031-1.37l-.361-.214-3.741.975.998-3.645-.235-.374a9.86 9.86 0 0 1-1.516-5.26c.002-5.45 4.437-9.884 9.893-9.884 2.64.001 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.883 9.884zm5.422-7.403c-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.29.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#25D366"/>
+    </svg>
+    <span>Consultar por WhatsApp</span>
+  </a>
+
   <script>
-    // CountUp animation on page load
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+
     function countUp(el) {
       const target = +el.dataset.target;
       const suffix = el.dataset.suffix || '';
       const duration = 2000;
       const step = 16;
-      const increment = target / (duration / step);
-      let current = 0;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          el.textContent = target + suffix;
-          clearInterval(timer);
-        } else {
-          el.textContent = Math.floor(current) + suffix;
-        }
+      const inc = target / (duration / step);
+      let cur = 0;
+      const t = setInterval(() => {
+        cur += inc;
+        if (cur >= target) { el.textContent = target + suffix; clearInterval(t); }
+        else { el.textContent = Math.floor(cur) + suffix; }
       }, step);
     }
-    document.querySelectorAll('.stat-n[data-target]').forEach(countUp);
+    document.querySelectorAll('[data-target]').forEach(countUp);
 
-    // Scroll reveal
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
