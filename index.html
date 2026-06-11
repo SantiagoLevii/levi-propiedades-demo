@@ -9,15 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #09090A;
-      --bg2:     #050504;
-      --text:    #F2EDE6;
-      --text2:   #F0EBE0;
-      --muted:   #9A9490;
-      --accent:  #8B7355;
-      --border:  rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.10);
-      --font:    'Plus Jakarta Sans', system-ui, sans-serif;
+      --bg:        #09090A;
+      --bg2:       #050504;
+      --text:      #F2EDE6;
+      --text2:     #F0EBE0;
+      --muted:     #9A9490;
+      --accent:    #8B7355;
+      --border:    rgba(255,255,255,0.08);
+      --border2:   rgba(255,255,255,0.10);
+      --font:      'Plus Jakarta Sans', system-ui, sans-serif;
+      --ease-out:  cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -88,9 +89,10 @@
       border: 1px solid var(--accent);
       padding: 0.4rem 1rem;
       border-radius: 4px;
-      transition: background 0.25s, color 0.25s;
+      transition: background 0.25s, color 0.25s, transform 0.12s var(--ease-out);
     }
     .nav-cta:hover { background: var(--accent); color: var(--bg); }
+    .nav-cta:active { transform: scale(0.97); }
 
     /* HERO */
     .hero {
@@ -134,7 +136,23 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.75rem, 6vw, 4.5rem);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero-title em {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      color: rgba(242,237,230,0.75);
     }
 
     .hero-widget {
@@ -190,9 +208,10 @@
       cursor: pointer;
       white-space: nowrap;
       border-radius: 0;
-      transition: opacity 0.25s;
+      transition: opacity 0.25s, transform 0.12s var(--ease-out);
     }
     .hw-btn:hover { opacity: 0.85; }
+    .hw-btn:active { transform: scale(0.97); }
 
     .hero-stats {
       position: relative;
@@ -236,6 +255,18 @@
       display: flex;
       align-items: center;
     }
+    .hero-strip::before,
+    .hero-strip::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-strip::before { left: 0; background: linear-gradient(to right, rgba(9,9,10,0.9), transparent); }
+    .hero-strip::after  { right: 0; background: linear-gradient(to left, rgba(9,9,10,0.9), transparent); }
     .hero-strip-track {
       display: flex;
       white-space: nowrap;
@@ -321,7 +352,7 @@
       aspect-ratio: 16/9;
       object-fit: cover;
       display: block;
-      transition: transform 0.3s ease;
+      transition: transform 0.35s var(--ease-out);
     }
     .props-grid .pcard:first-child { grid-column: span 2; }
     .props-grid .pcard:first-child .pcard-img { aspect-ratio: 4/3; }
@@ -339,7 +370,7 @@
       letter-spacing: 0.08em;
       color: var(--text);
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s var(--ease-out);
     }
     .pcard:hover .pcard-overlay { opacity: 1; }
 
@@ -453,10 +484,23 @@
 
     /* AMENITIES STRIP */
     .amenities-wrap {
+      position: relative;
       overflow: hidden;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
+    .amenities-wrap::before,
+    .amenities-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .amenities-wrap::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+    .amenities-wrap::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
     .amenities-track {
       display: flex;
       width: max-content;
@@ -684,11 +728,12 @@
       letter-spacing: 0.06em;
       cursor: pointer;
       border-radius: 4px;
-      transition: opacity 0.25s;
+      transition: opacity 0.25s, transform 0.12s var(--ease-out);
       margin-top: 0.25rem;
       font-family: var(--font);
     }
     .submit-btn:hover { opacity: 0.85; }
+    .submit-btn:active { transform: scale(0.97); }
 
     /* WHATSAPP */
     .wa-btn {
@@ -873,10 +918,11 @@
       cursor: pointer;
       font-family: var(--font);
       border-radius: 0 4px 4px 0;
-      transition: opacity 0.25s;
+      transition: opacity 0.25s, transform 0.12s var(--ease-out);
       white-space: nowrap;
     }
     .om-btn:hover { opacity: 0.85; }
+    .om-btn:active { transform: scale(0.97); }
 
     /* MODAL */
     .modal-overlay {
@@ -890,7 +936,7 @@
       padding: 1.5rem;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.25s var(--ease-out);
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal {
@@ -902,7 +948,7 @@
       border-radius: 8px;
       position: relative;
       transform: translateY(16px);
-      transition: transform 0.25s ease;
+      transition: transform 0.3s var(--ease-out);
     }
     .modal-overlay.open .modal { transform: translateY(0); }
     .modal-close {
@@ -972,8 +1018,8 @@
     /* REVEAL */
     .reveal {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(32px);
+      transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .d1 { transition-delay: 0.1s; }
@@ -1045,7 +1091,8 @@
     <div class="hero-bg"></div>
 
     <div class="hero-center">
-      <p class="hero-eyebrow">Encontrá tu próxima propiedad</p>
+      <p class="hero-eyebrow">Levi Propiedades - Buenos Aires</p>
+      <h1 class="hero-title">El mercado premium<br><em>en manos expertas</em></h1>
 
       <div class="hero-widget">
         <div class="hw-field">
