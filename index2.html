@@ -29,10 +29,10 @@ LEVI PROPIEDADES — Decisiones de diseño
 2. STACK
    HTML + CSS + JS vanilla en un solo index.html. Cero build: abre con doble
    clic, con `python3 -m http.server` o en GitHub Pages sin config. Único CDN:
-   Leaflet 1.9.4 + Google Fonts. Sin frameworks CSS: el sistema de diseño
-   completo vive en custom properties. Las propiedades se renderizan desde un
-   array JS único que alimenta grilla, filtros y mapa (una sola fuente de
-   verdad).
+   Google Fonts. El mapa es un embed estático de Google Maps (iframe, sin
+   API key ni librerías). Sin frameworks CSS: el sistema de diseño completo
+   vive en custom properties. Las propiedades se renderizan desde un array
+   JS único que alimenta grilla y filtros (una sola fuente de verdad).
 
 3. FILOSOFÍA DE MOVIMIENTO
    Tres usos permitidos: (a) guiar la atención (reveals al entrar en
@@ -56,7 +56,6 @@ gráfico animado — sostiene el posicionamiento de datos) y "Cómo trabajamos"
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Archivo:wght@400;500;600&family=Chivo+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 /* ═══════════════════════════════════════════════════════════════════
@@ -122,10 +121,6 @@ gráfico animado — sostiene el posicionamiento de datos) y "Cómo trabajamos"
   --color-text-on-dark:#FAF7F2;
   --color-text-on-dark-soft:rgba(250,247,242,.72);
 
-  /* ── Mapa ── */
-  --color-map-marker:var(--color-accent);
-  --color-map-popup-bg:var(--color-bg-base);
-
   /* ── Trama del plano catastral (hero) — hueso al 6–10% ── */
   --color-grid-strong:rgba(250,247,242,.09);
   --color-grid-soft:rgba(250,247,242,.055);
@@ -146,9 +141,6 @@ gráfico animado — sostiene el posicionamiento de datos) y "Cómo trabajamos"
   --tinta-2:var(--color-ink-2);
   --tinta-suave:var(--color-ink-soft);
   --tinta-suave-d:var(--color-text-on-dark-soft);
-  --jacaranda:var(--color-accent);
-  --jacaranda-claro:var(--color-accent-bright);
-  --jacaranda-tinte:var(--color-accent-subtle);
   --bronce:var(--color-accent-hover);
   --color-bronze:var(--color-accent-hover);
   --color-bronze-bright:var(--color-accent-bright);
@@ -179,8 +171,9 @@ gráfico animado — sostiene el posicionamiento de datos) y "Cómo trabajamos"
   --sombra-2:0 2px 6px rgba(22,36,61,.07),0 18px 44px rgba(22,36,61,.12);
   --sombra-acento:0 10px 30px rgba(168,130,79,.30);
 
-  /* movimiento */
-  --ease:cubic-bezier(.22,.61,.21,1);
+  /* movimiento — ease-out fuerte (Emil Kowalski): arranque inmediato, frenado largo */
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);
+  --ease:var(--ease-out);
   --t-rapida:.22s var(--ease);
   --t-media:.45s var(--ease);
   --t-lenta:.8s var(--ease);
@@ -199,8 +192,8 @@ img{display:block;max-width:100%}
 a{color:inherit}
 button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 :focus{outline:none}
-:focus-visible{outline:2px solid var(--jacaranda);outline-offset:3px;border-radius:2px}
-.tema-oscuro :focus-visible{outline-color:var(--jacaranda-claro)}
+:focus-visible{outline:2px solid var(--color-accent);outline-offset:3px;border-radius:2px}
+.tema-oscuro :focus-visible{outline-color:var(--color-accent-bright)}
 
 .skip-link{
   position:fixed;top:-100px;left:1rem;z-index:200;background:var(--tinta);
@@ -221,8 +214,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   margin-bottom:var(--sp-3);
 }
 .etiqueta::before{content:"";width:9px;height:9px;background:var(--color-accent);border-radius:2px;flex:none}
-.tema-oscuro .etiqueta{color:var(--jacaranda-claro)}
-.tema-oscuro .etiqueta::before{background:var(--jacaranda-claro)}
+.tema-oscuro .etiqueta{color:var(--color-accent-bright)}
+.tema-oscuro .etiqueta::before{background:var(--color-accent-bright)}
 
 h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.12;letter-spacing:-.01em}
 h2{font-size:var(--fs-h2);max-width:18ch}
@@ -232,7 +225,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .tema-oscuro{background:var(--tinta);color:var(--piedra)}
 
 /* reveals */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity var(--t-lenta),transform var(--t-lenta)}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
 .reveal.visible{opacity:1;transform:none}
 .reveal[data-delay="1"]{transition-delay:.1s}
 .reveal[data-delay="2"]{transition-delay:.2s}
@@ -249,7 +242,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .btn-acento{background:var(--color-accent);color:var(--color-accent-text)}
 .btn-acento:hover{background:var(--color-accent-hover);color:var(--color-text-on-dark);transform:translateY(-2px);box-shadow:var(--sombra-acento)}
 .btn-fantasma{border:1px solid var(--linea-d);color:var(--piedra)}
-.btn-fantasma:hover{border-color:var(--jacaranda-claro);color:var(--jacaranda-claro)}
+.btn-fantasma:hover{border-color:var(--color-accent-bright);color:var(--color-accent-bright)}
 .btn-tinta{background:var(--tinta);color:var(--blanco)}
 .btn-tinta:hover{background:var(--tinta-2);transform:translateY(-2px)}
 
@@ -273,7 +266,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 }
 .nav-links a::after{
   content:"";position:absolute;left:0;bottom:-6px;width:100%;height:2px;
-  background:var(--jacaranda);transform:scaleX(0);transform-origin:left;transition:transform var(--t-rapida);
+  background:var(--color-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--t-rapida);
 }
 .nav-links a:hover{opacity:1}
 .nav-links a:hover::after{transform:scaleX(1)}
@@ -320,9 +313,9 @@ h2{font-size:var(--fs-h2);max-width:18ch}
   font-family:var(--f-display);font-size:clamp(1.7rem,7vw,2.6rem);color:var(--piedra);
 }
 .menu-movil a::before{
-  content:"0" counter(m);font-family:var(--f-mono);font-size:.8rem;color:var(--jacaranda-claro);
+  content:"0" counter(m);font-family:var(--f-mono);font-size:.8rem;color:var(--color-accent-bright);
 }
-.menu-movil a:active{color:var(--jacaranda-claro)}
+.menu-movil a:active{color:var(--color-accent-bright)}
 .menu-pie{margin-top:var(--sp-4);font-family:var(--f-mono);font-size:var(--fs-micro);
   letter-spacing:.12em;color:var(--tinta-suave-d);text-transform:uppercase}
 
@@ -343,7 +336,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .plano-a{animation:deriva 110s linear infinite alternate;opacity:.5}
 .plano-b{animation:deriva 180s linear infinite alternate-reverse;opacity:.3}
 @keyframes deriva{from{transform:translate(0,0)}to{transform:translate(-3.5%,-2.5%)}}
-/* recalibración cromática del plano: CSS pisa los atributos del SVG */
+/* color del plano: definido íntegramente por el sistema cromático en CSS */
 .hero-plano path{stroke:inherit}
 .plano-a g{stroke:var(--color-grid-strong)}
 .plano-b g{stroke:var(--color-grid-soft)}
@@ -359,7 +352,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 @keyframes pulso{0%{transform:scale(.4);opacity:.9}70%,100%{transform:scale(1.5);opacity:0}}
 
 .hero-int{position:relative;z-index:2}
-.hero-etiqueta{color:var(--jacaranda-claro)}
+.hero-etiqueta{color:var(--color-accent-bright)}
 .hero h1{font-size:var(--fs-hero);max-width:15ch}
 .hero h1 em{font-style:normal;color:var(--color-accent)}
 .hero-bajada{max-width:46ch;margin-top:var(--sp-3);color:var(--tinta-suave-d);font-size:1.07rem}
@@ -378,15 +371,11 @@ h2{font-size:var(--fs-h2);max-width:18ch}
   pointer-events:none;
 }
 .b-campo select{
-  width:100%;appearance:none;background:transparent;border:none;color:var(--piedra);
+  width:100%;appearance:none;-webkit-appearance:none;border:none;color:var(--piedra);
   font:inherit;font-size:var(--fs-small);padding:1.95rem 2.4rem .85rem 1.1rem;cursor:pointer;
+  background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C6A571' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 1.05rem center;
 }
 .b-campo select option{color:var(--tinta);background:var(--blanco)}
-.b-campo::after{
-  content:"";position:absolute;right:1.05rem;top:55%;width:7px;height:7px;
-  border-right:1.5px solid var(--jacaranda-claro);border-bottom:1.5px solid var(--jacaranda-claro);
-  transform:rotate(45deg);pointer-events:none;
-}
 .b-campo:hover{background:rgba(250,247,242,.13)}
 .buscador .btn{border-radius:0;height:100%;padding-inline:2rem}
 @media(max-width:880px){
@@ -430,10 +419,11 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 
 .prop{
   background:var(--blanco);border-radius:var(--r-l);overflow:hidden;
+  border:1px solid transparent;
   box-shadow:var(--sombra-1);display:flex;flex-direction:column;
-  transition:transform var(--t-media),box-shadow var(--t-media),opacity var(--t-media);
+  transition:transform var(--t-media),box-shadow var(--t-media),opacity var(--t-media),border-color .2s var(--ease-out);
 }
-.prop:hover{transform:translateY(-6px);box-shadow:var(--sombra-2)}
+.prop:hover{transform:translateY(-6px);box-shadow:var(--sombra-2);border-color:var(--color-bronze)}
 .prop.oculta{opacity:0;transform:scale(.96) translateY(10px)}
 .prop-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--piedra-2)}
 .prop-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
@@ -534,7 +524,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
   content:"0" counter(p);position:absolute;top:-.85rem;left:0;background:var(--piedra);
   padding-right:.8rem;font-family:var(--f-mono);font-size:.8rem;color:var(--bronce);letter-spacing:.1em;
 }
-.paso.visible{border-top-color:var(--jacaranda)}
+.paso.visible{border-top-color:var(--color-accent)}
 .paso{transition:border-color .8s var(--ease)}
 .paso h3{font-size:1.15rem;margin-bottom:.6rem}
 .paso p{font-size:var(--fs-small);color:var(--tinta-suave)}
@@ -567,27 +557,11 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 
 /* ───────────────────────── MAPA ───────────────────────── */
 .mapa-sec{background:var(--piedra-2)}
-#mapa-leaflet{
-  height:520px;border-radius:var(--r-l);margin-top:var(--sp-5);
-  box-shadow:var(--sombra-1);z-index:1;background:var(--piedra);
+.mapa-embed{
+  display:block;width:100%;height:520px;border:0;border-radius:var(--r-l);
+  margin-top:var(--sp-5);box-shadow:var(--sombra-1);background:var(--piedra);
 }
-@media(max-width:640px){#mapa-leaflet{height:420px}}
-.pin-levi{background:transparent;border:none}
-.pin-levi i{
-  display:block;width:16px;height:16px;border-radius:50%;
-  background:var(--color-map-marker);border:3px solid var(--color-map-popup-bg);box-shadow:0 2px 8px rgba(22,36,61,.35);
-  transition:transform var(--t-rapida);
-}
-.pin-levi:hover i{transform:scale(1.3)}
-.leaflet-popup-content-wrapper{border-radius:var(--r-m)!important;box-shadow:var(--sombra-2)!important;padding:0!important;overflow:hidden;background:var(--color-map-popup-bg)!important}
-.leaflet-popup-tip{background:var(--color-map-popup-bg)!important}
-.leaflet-popup-content{margin:0!important;width:230px!important;font-family:var(--f-body)!important}
-.mini-prop img{width:100%;height:120px;object-fit:cover}
-.mini-prop div{padding:.8rem .95rem .95rem}
-.mini-prop .mp-barrio{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-hover)}
-.mini-prop .mp-precio{font-family:var(--f-mono);font-size:1rem;font-weight:500;margin:.25rem 0 .4rem;color:var(--color-accent-hover)}
-.mini-prop a{font-size:.8rem;font-weight:500;color:var(--color-accent-hover);text-decoration:none}
-.mini-prop a:hover{text-decoration:underline}
+@media(max-width:640px){.mapa-embed{height:420px}}
 
 /* ───────────────────────── CALCULADORA ───────────────────────── */
 .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4);margin-top:var(--sp-5);align-items:stretch}
@@ -602,22 +576,22 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .ctrl output{font-family:var(--f-mono);font-size:var(--fs-small);color:var(--color-accent-hover);font-weight:500}
 .ctrl input[type=range]{
   width:100%;appearance:none;height:5px;border-radius:99px;cursor:pointer;
-  background:linear-gradient(to right,var(--jacaranda) var(--pct,50%),var(--piedra-2) var(--pct,50%));
+  background:linear-gradient(to right,var(--color-accent) var(--pct,50%),var(--piedra-2) var(--pct,50%));
 }
 .ctrl input[type=range]::-webkit-slider-thumb{
   appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;
-  border:2px solid var(--jacaranda);box-shadow:var(--sombra-1);transition:transform var(--t-rapida);
+  border:2px solid var(--color-accent);box-shadow:var(--sombra-1);transition:transform var(--t-rapida);
 }
 .ctrl input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 .ctrl input[type=range]::-moz-range-thumb{
-  width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--jacaranda);box-shadow:var(--sombra-1);
+  width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--color-accent);box-shadow:var(--sombra-1);
 }
 .ctrl select,.ctrl input[type=number]{
   width:100%;padding:.8rem 1rem;border:1px solid var(--color-border);border-radius:var(--r-s);
   font:inherit;font-size:var(--fs-small);background:var(--color-bg-base);color:var(--color-text-primary);
   transition:border-color var(--t-rapida),box-shadow var(--t-rapida);
 }
-.ctrl select:focus,.ctrl input[type=number]:focus{border-color:var(--jacaranda);box-shadow:0 0 0 3px var(--jacaranda-tinte)}
+.ctrl select:focus,.ctrl input[type=number]:focus{border-color:var(--color-accent);box-shadow:0 0 0 3px var(--color-accent-subtle)}
 .calc-res{
   background:var(--tinta);color:var(--piedra);border-radius:var(--r-l);
   padding:clamp(1.6rem,3vw,2.4rem);display:flex;flex-direction:column;justify-content:center;gap:1.4rem;
@@ -625,7 +599,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .res-principal small{display:block;font-family:var(--f-mono);font-size:var(--fs-micro);letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-suave-d);margin-bottom:.5rem}
 .res-principal strong{
   font-family:var(--f-display);font-weight:400;font-size:clamp(2.1rem,4.5vw,3rem);
-  color:var(--jacaranda-claro);line-height:1;display:block;
+  color:var(--color-accent-bright);line-height:1;display:block;
   transition:opacity .25s var(--ease);
 }
 .res-principal strong.tic{opacity:.25}
@@ -653,7 +627,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .estrellas svg{width:15px;height:15px;fill:currentColor}
 .cita blockquote{font-size:1.02rem;line-height:1.6;flex:1}
 .cita blockquote em{font-style:normal;color:var(--color-accent-hover);font-weight:500}
-.cita:nth-child(2) blockquote em{color:var(--jacaranda-claro)}
+.cita:nth-child(2) blockquote em{color:var(--color-accent-bright)}
 .cita-firma{display:flex;align-items:center;gap:.9rem}
 .cita-firma img{width:46px;height:46px;border-radius:50%;object-fit:cover}
 .cita-nombre{font-weight:600;font-size:var(--fs-small)}
@@ -676,7 +650,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .contacto-promesa li strong{color:var(--piedra);font-weight:500}
 .contacto-promesa li::before{
   content:"";flex:none;width:18px;height:18px;margin-top:.15rem;border-radius:50%;
-  background:var(--jacaranda) center/10px no-repeat;
+  background:var(--color-accent) center/10px no-repeat;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
 }
 .contacto-dato{font-family:var(--f-mono);font-size:var(--fs-micro);letter-spacing:.1em;color:var(--color-bronze-bright);text-transform:uppercase}
@@ -695,7 +669,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
   background-repeat:no-repeat;background-position:right 1rem center;
 }
 .campo textarea{min-height:110px;resize:vertical;padding-right:1.05rem}
-.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--jacaranda);box-shadow:0 0 0 3px var(--jacaranda-tinte)}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--color-accent);box-shadow:0 0 0 3px var(--color-accent-subtle)}
 .campo .marca-ok{
   position:absolute;right:.95rem;top:2.55rem;width:18px;height:18px;border-radius:50%;
   background:var(--ok) center/10px no-repeat;opacity:0;transform:scale(.4);
@@ -720,8 +694,8 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 }
 .form-ok.mostrar{opacity:1;visibility:visible}
 .form-ok svg{width:74px;height:74px}
-.form-ok circle{stroke:var(--jacaranda);stroke-width:2;fill:none;stroke-dasharray:230;stroke-dashoffset:230}
-.form-ok path{stroke:var(--jacaranda);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60}
+.form-ok circle{stroke:var(--color-accent);stroke-width:2;fill:none;stroke-dasharray:230;stroke-dashoffset:230}
+.form-ok path{stroke:var(--color-accent);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60}
 .form-ok.mostrar circle{animation:trazo 1s var(--ease) forwards}
 .form-ok.mostrar path{animation:trazo .6s var(--ease) .55s forwards}
 @keyframes trazo{to{stroke-dashoffset:0}}
@@ -738,16 +712,16 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 .pie h4{font-family:var(--f-mono);font-size:var(--fs-micro);font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--color-bronze-bright);margin-bottom:1.1rem}
 .pie ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
 .pie ul a{font-size:var(--fs-small);color:var(--tinta-suave-d);text-decoration:none;transition:color var(--t-rapida)}
-.pie ul a:hover{color:var(--jacaranda-claro)}
+.pie ul a:hover{color:var(--color-accent-bright)}
 .pie address{font-style:normal;font-size:var(--fs-small);color:var(--tinta-suave-d);line-height:2}
 .pie address a{color:var(--piedra);text-decoration:none}
-.pie address a:hover{color:var(--jacaranda-claro)}
+.pie address a:hover{color:var(--color-accent-bright)}
 .pie-legal{
   margin-top:var(--sp-5);padding-top:var(--sp-3);border-top:1px solid var(--linea-d);
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;
   font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;color:var(--tinta-suave-d);
 }
-.pie-legal a{color:var(--jacaranda-claro);text-decoration:none}
+.pie-legal a{color:var(--color-accent-bright);text-decoration:none}
 .pie-legal a:hover{text-decoration:underline}
 
 /* ───────────────────────── WHATSAPP FAB ───────────────────────── */
@@ -762,6 +736,13 @@ h2{font-size:var(--fs-h2);max-width:18ch}
   animation:pulso 2.8s var(--ease) infinite;
 }
 .fab-wa svg{width:30px;height:30px;fill:#fff}
+
+/* ───────────────────────── PRESS FEEDBACK ───────────────────────── */
+.btn:active,.pill:active,.tab:active,.fab-wa:active,.btn-menu:active,
+.chip button:active,.prop-link:active,.agente-contacto:active{
+  transform:scale(0.97);
+  transition:transform .12s var(--ease-out);
+}
 
 /* ───────────────────────── REDUCED MOTION ───────────────────────── */
 @media (prefers-reduced-motion: reduce){
@@ -814,17 +795,17 @@ h2{font-size:var(--fs-h2);max-width:18ch}
 <section class="hero tema-oscuro" id="inicio">
   <div class="hero-plano" aria-hidden="true">
     <svg class="plano-a" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
-      <g stroke="#3E4150" stroke-width="1" fill="none">
+      <g stroke-width="1" fill="none">
         <path d="M0 150 H1400 M0 290 H1400 M0 430 H1400 M0 570 H1400 M0 710 H1400"/>
         <path d="M180 0 V900 M380 0 V900 M580 0 V900 M780 0 V900 M980 0 V900 M1180 0 V900"/>
-        <path d="M0 820 L1400 120" stroke-width="1.6" stroke="#22304E"/>
+        <path d="M0 820 L1400 120" stroke-width="1.6"/>
       </g>
     </svg>
     <svg class="plano-b" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0">
-      <g stroke="#2B2D37" stroke-width="1" fill="none">
+      <g stroke-width="1" fill="none">
         <path d="M0 80 H1400 M0 220 H1400 M0 360 H1400 M0 500 H1400 M0 640 H1400 M0 780 H1400"/>
         <path d="M90 0 V900 M290 0 V900 M490 0 V900 M690 0 V900 M890 0 V900 M1090 0 V900 M1290 0 V900"/>
-        <path d="M0 60 L1400 760" stroke-width="1.4" stroke="#1D2A45"/>
+        <path d="M0 60 L1400 760" stroke-width="1.4"/>
       </g>
     </svg>
   </div>
@@ -993,7 +974,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
     <div class="equipo-grid">
       <article class="agente reveal">
         <div class="agente-foto">
-          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22800%22%20viewBox%3D%220%200%20640%20800%22%3E%0A%20%20%0A%20%20%20%20%3C%21--%20fondo%20de%20estudio%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22%23DED5C5%22%2F%3E%0A%20%20%20%20%3C%21--%20silueta%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22280%22%20rx%3D%22105%22%20ry%3D%22115%22%20fill%3D%22%23C4B09A%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q200%20520%20320%20480%20Q440%20520%20540%20800%20Z%22%20fill%3D%22%23C8BAA4%22%2F%3E%0A%20%20%20%20%3C%21--%20cuello%20y%20cara%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22245%22%20rx%3D%2272%22%20ry%3D%2280%22%20fill%3D%22%23D4C0A8%22%2F%3E%0A%20%20%20%20%3C%21--%20cabello%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22195%22%20rx%3D%2285%22%20ry%3D%2260%22%20fill%3D%22%238A7060%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M240%20220%20Q220%20300%20235%20380%22%20stroke%3D%22%238A7060%22%20stroke-width%3D%2230%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M400%20220%20Q420%20300%20405%20380%22%20stroke%3D%22%238A7060%22%20stroke-width%3D%2230%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3C%21--%20ropa%20profesional%20%E2%80%94%20navy%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q180%20540%20280%20510%20L320%20560%20L360%20510%20Q460%20540%20540%20800%20Z%22%20fill%3D%22%231E3050%22%2F%3E%0A%20%20%20%20%3C%21--%20sutileza%20bronce%20%E2%80%94%20solapa%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%22310%22%20y1%3D%22515%22%20x2%3D%22290%22%20y2%3D%22570%22%20stroke%3D%22%23A8824F%22%20stroke-width%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%21--%20pared%20art%20deco%20fondo%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22500%22%20x2%3D%22640%22%20y2%3D%22500%22%20stroke%3D%22%23C8BEAE%22%20stroke-width%3D%221.5%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22460%22%20stroke%3D%22%23C8BEAE%22%20stroke-width%3D%221%22%20opacity%3D%22.35%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22460%22%20stroke%3D%22%23C8BEAE%22%20stroke-width%3D%221%22%20opacity%3D%22.35%22%2F%3E%0A%20%20%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22transparent%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E" width="640" height="800" alt="Valentina Roitman, especialista en Recoleta" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80" width="640" height="800" alt="Valentina Roitman, especialista en Recoleta" loading="lazy">
           <span class="agente-esp">Pisos de categoría · Recoleta</span>
         </div>
         <h3>Valentina Roitman</h3>
@@ -1002,7 +983,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
       </article>
       <article class="agente reveal" data-delay="1">
         <div class="agente-foto">
-          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22800%22%20viewBox%3D%220%200%20640%20800%22%3E%0A%20%20%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22%23D4DDE8%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22280%22%20rx%3D%22105%22%20ry%3D%22115%22%20fill%3D%22%23C0B4A4%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M90%20800%20Q200%20520%20320%20480%20Q440%20520%20550%20800%20Z%22%20fill%3D%22%23BCAFA0%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22245%22%20rx%3D%2272%22%20ry%3D%2280%22%20fill%3D%22%23CEC0AC%22%2F%3E%0A%20%20%20%20%3C%21--%20cabello%20corto%20oscuro%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22180%22%20rx%3D%2280%22%20ry%3D%2250%22%20fill%3D%22%233A3028%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22248%22%20y%3D%22165%22%20width%3D%22144%22%20height%3D%2250%22%20fill%3D%22%233A3028%22%20rx%3D%225%22%2F%3E%0A%20%20%20%20%3C%21--%20traje%20oscuro%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M90%20800%20Q180%20540%20280%20510%20L320%20560%20L360%20510%20Q460%20540%20550%20800%20Z%22%20fill%3D%22%2316243D%22%2F%3E%0A%20%20%20%20%3C%21--%20corbata%20bronce%20--%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22315%20515%2C325%20515%2C330%20600%2C320%20620%2C310%20600%22%20fill%3D%22%23A8824F%22%2F%3E%0A%20%20%20%20%3C%21--%20camisa%20blanca%20--%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22310%20515%2C315%20515%2C313%20560%2C307%20560%22%20fill%3D%22%23E8E0D4%22%2F%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22325%20515%2C330%20515%2C333%20560%2C327%20560%22%20fill%3D%22%23E8E0D4%22%2F%3E%0A%20%20%20%20%3C%21--%20ventana%20de%20oficina%20fondo%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2260%22%20width%3D%22200%22%20height%3D%22300%22%20fill%3D%22%23A8C4D8%22%20rx%3D%222%22%20opacity%3D%22.3%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22360%22%20y%3D%2260%22%20width%3D%22200%22%20height%3D%22300%22%20fill%3D%22%23A8C4D8%22%20rx%3D%222%22%20opacity%3D%22.3%22%2F%3E%0A%20%20%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22transparent%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E" width="640" height="800" alt="Marcos Aguirre, especialista en inversiones" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80" width="640" height="800" alt="Marcos Aguirre, especialista en inversiones" loading="lazy">
           <span class="agente-esp">Inversiones · Puerto Madero</span>
         </div>
         <h3>Marcos Aguirre</h3>
@@ -1011,7 +992,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
       </article>
       <article class="agente reveal" data-delay="2">
         <div class="agente-foto">
-          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22800%22%20viewBox%3D%220%200%20640%20800%22%3E%0A%20%20%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22%23D8D0C4%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22280%22%20rx%3D%22105%22%20ry%3D%22115%22%20fill%3D%22%23C8B8A4%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q200%20520%20320%20480%20Q440%20520%20540%20800%20Z%22%20fill%3D%22%23C4B49E%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22245%22%20rx%3D%2272%22%20ry%3D%2280%22%20fill%3D%22%23D8C4AC%22%2F%3E%0A%20%20%20%20%3C%21--%20cabello%20casta%C3%B1o%20largo%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22190%22%20rx%3D%2290%22%20ry%3D%2265%22%20fill%3D%22%236A5040%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M235%20230%20Q200%20350%20215%20500%22%20stroke%3D%22%236A5040%22%20stroke-width%3D%2238%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M405%20230%20Q440%20350%20425%20500%22%20stroke%3D%22%236A5040%22%20stroke-width%3D%2238%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3C%21--%20blazer%20terracota%2Fcamel%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q185%20545%20285%20510%20L320%20560%20L355%20510%20Q455%20545%20540%20800%20Z%22%20fill%3D%22%23B89070%22%2F%3E%0A%20%20%20%20%3C%21--%20solapa%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M290%20514%20Q305%20545%20320%20555%22%20stroke%3D%22%23C8A880%22%20stroke-width%3D%2212%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M350%20514%20Q335%20545%20320%20555%22%20stroke%3D%22%23C8A880%22%20stroke-width%3D%2212%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3C%21--%20fondo%20Belgrano%20%E2%80%94%20ladrillos%20suaves%20--%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.25%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22400%22%20width%3D%22640%22%20height%3D%22400%22%20fill%3D%22%23C4A880%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22420%22%20width%3D%22640%22%20height%3D%2214%22%20fill%3D%22%23B89870%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22448%22%20width%3D%22640%22%20height%3D%2214%22%20fill%3D%22%23B89870%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22476%22%20width%3D%22640%22%20height%3D%2214%22%20fill%3D%22%23B89870%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22transparent%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E" width="640" height="800" alt="Julieta Paz, especialista en Belgrano y Núñez" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&q=80" width="640" height="800" alt="Julieta Paz, especialista en Belgrano y Núñez" loading="lazy">
           <span class="agente-esp">Casas y familias · Belgrano / Núñez</span>
         </div>
         <h3>Julieta Paz</h3>
@@ -1028,9 +1009,9 @@ h2{font-size:var(--fs-h2);max-width:18ch}
     <div class="reveal">
       <p class="etiqueta">Dónde operamos</p>
       <h2>Cinco barrios. Conocimiento de primera mano.</h2>
-      <p class="bajada">Cada punto es una propiedad disponible hoy. Tocalo para ver precio y ficha — y si querés saber cómo es vivir en esa cuadra exacta, preguntanos: probablemente ya vendimos en ese edificio.</p>
+      <p class="bajada">Palermo, Recoleta, Belgrano, Núñez y Puerto Madero. Si querés saber cómo es vivir en una cuadra exacta, preguntanos: probablemente ya vendimos en ese edificio.</p>
     </div>
-    <div id="mapa-leaflet" role="region" aria-label="Mapa de propiedades disponibles en Buenos Aires"></div>
+    <iframe class="mapa-embed" src="https://maps.google.com/maps?q=Palermo,+Buenos+Aires,+Argentina&z=12&output=embed" title="Mapa del Corredor Norte de Buenos Aires" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 </section>
 
@@ -1138,7 +1119,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
         </div>
         <blockquote>Vimos cuatro propiedades, no cuarenta. La segunda fue la nuestra. <em>A los 60 días estábamos firmando la escritura</em>, con cada paso explicado antes de que preguntáramos.</blockquote>
         <div class="cita-firma">
-          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%20%20%3Crect%20width%3D%22120%22%20height%3D%22120%22%20fill%3D%22%23E4DDD0%22%20rx%3D%2260%22%2F%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20font-weight%3D%22400%22%20fill%3D%22%2316243D%22%20letter-spacing%3D%221%22%3EFE%3C%2Ftext%3E%0A%3C%2Fsvg%3E" width="46" height="46" alt="" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" width="46" height="46" alt="" loading="lazy">
           <div><p class="cita-nombre">Federico Etchart</p><p class="cita-rol">Comprador · Palermo</p></div>
         </div>
       </article>
@@ -1148,7 +1129,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
         </div>
         <blockquote>Me tasaron por debajo de lo que yo esperaba — y me mostraron por qué, con datos. <em>Se vendió en 39 días al 98% de la tasación.</em> Otros me prometían más y todavía estarían esperando.</blockquote>
         <div class="cita-firma">
-          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%20%20%3Crect%20width%3D%22120%22%20height%3D%22120%22%20fill%3D%22%23D0DAE4%22%20rx%3D%2260%22%2F%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20font-weight%3D%22400%22%20fill%3D%22%2316243D%22%20letter-spacing%3D%221%22%3EMO%3C%2Ftext%3E%0A%3C%2Fsvg%3E" width="46" height="46" alt="" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80" width="46" height="46" alt="" loading="lazy">
           <div><p class="cita-nombre">Mercedes Olazábal</p><p class="cita-rol">Vendedora · Recoleta</p></div>
         </div>
       </article>
@@ -1158,7 +1139,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
         </div>
         <blockquote>Compré dos unidades en Núñez en 2024 con su informe de renta en mano. <em>Hoy rinden 5,1% anual en dólares</em> — casi exactamente lo que el informe proyectaba.</blockquote>
         <div class="cita-firma">
-          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%20%20%3Crect%20width%3D%22120%22%20height%3D%22120%22%20fill%3D%22%23D8E4D8%22%20rx%3D%2260%22%2F%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20font-weight%3D%22400%22%20fill%3D%22%2316243D%22%20letter-spacing%3D%221%22%3EGP%3C%2Ftext%3E%0A%3C%2Fsvg%3E" width="46" height="46" alt="" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&q=80" width="46" height="46" alt="" loading="lazy">
           <div><p class="cita-nombre">Gustavo Peñalva</p><p class="cita-rol">Inversor · Núñez</p></div>
         </div>
       </article>
@@ -1268,7 +1249,7 @@ h2{font-size:var(--fs-h2);max-width:18ch}
       </div>
     </div>
     <div class="pie-legal">
-      <span>© 2025 Levi Propiedades. Desarrollado por <a href="#" rel="noopener">Levi Studio</a>.</span>
+      <span>© 2026 Levi Propiedades. Desarrollado por <a href="#" rel="noopener">Levi Studio</a>.</span>
       <span>Mat. CUCICBA 7842 · Operaciones en USD billete o MEP según normativa vigente.</span>
     </div>
   </div>
@@ -1279,23 +1260,16 @@ h2{font-size:var(--fs-h2);max-width:18ch}
   <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 .8C7.6.8.8 7.6.8 16c0 2.7.7 5.3 2 7.6L.8 31.2l7.8-2c2.2 1.2 4.7 1.9 7.4 1.9 8.4 0 15.2-6.8 15.2-15.1S24.4.8 16 .8zm0 27.7c-2.4 0-4.7-.7-6.6-1.8l-.5-.3-4.6 1.2 1.2-4.5-.3-.5c-1.3-2-2-4.3-2-6.6C3.2 9 8.9 3.3 16 3.3S28.8 9 28.8 16 23.1 28.5 16 28.5zm7-9.4c-.4-.2-2.3-1.1-2.6-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.5-.2.3-.4.3-.8.1-.4-.2-1.6-.6-3.1-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.7-.9-.7h-.7c-.3 0-.7.1-1.1.5-.4.4-1.4 1.4-1.4 3.3s1.4 3.8 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.7 2.3.9 1 .3 1.8.3 2.5.2.8-.1 2.3-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.4-.3-.8-.5z"/></svg>
 </a>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script defer>
 document.addEventListener('DOMContentLoaded',()=>{
 
 const IMG = {
-  "levi-prop1": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23E8E0D4%22%2F%3E%0A%20%20%0A%20%20%20%20%3Crect%20x%3D%2260%22%20y%3D%2280%22%20width%3D%22680%22%20height%3D%22380%22%20fill%3D%22%23D4C9B8%22%20rx%3D%223%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2260%22%20y%3D%2280%22%20width%3D%22680%22%20height%3D%2230%22%20fill%3D%22%23C2B8A6%22%2F%3E%0A%20%20%20%20%3C%21--%20ventanales%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22130%22%20width%3D%22120%22%20height%3D%22180%22%20fill%3D%22%23B8D4E8%22%20rx%3D%222%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22240%22%20y%3D%22130%22%20width%3D%22120%22%20height%3D%22180%22%20fill%3D%22%23B8D4E8%22%20rx%3D%222%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22440%22%20y%3D%22130%22%20width%3D%22120%22%20height%3D%22180%22%20fill%3D%22%23B8D4E8%22%20rx%3D%222%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22580%22%20y%3D%22130%22%20width%3D%22120%22%20height%3D%22180%22%20fill%3D%22%23B8D4E8%22%20rx%3D%222%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%21--%20balc%C3%B3n%20terraza%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2260%22%20y%3D%22310%22%20width%3D%22680%22%20height%3D%22150%22%20fill%3D%22%23CABFAD%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2260%22%20y%3D%22308%22%20width%3D%22680%22%20height%3D%228%22%20fill%3D%22%23A8824F%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%21--%20barandilla%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%22370%22%20x2%3D%22720%22%20y2%3D%22370%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%22370%22%20x2%3D%2280%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%222.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22720%22%20y1%3D%22370%22%20x2%3D%22720%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%222.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22180%22%20y1%3D%22370%22%20x2%3D%22180%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22280%22%20y1%3D%22370%22%20x2%3D%22280%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22380%22%20y1%3D%22370%22%20x2%3D%22380%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22480%22%20y1%3D%22370%22%20x2%3D%22480%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22580%22%20y1%3D%22370%22%20x2%3D%22580%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22680%22%20y1%3D%22370%22%20x2%3D%22680%22%20y2%3D%22315%22%20stroke%3D%22%239C8870%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3C%21--%20plantas%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22130%22%20cy%3D%22400%22%20rx%3D%2240%22%20ry%3D%2255%22%20fill%3D%22%237A9A6E%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22610%22%20cy%3D%22405%22%20rx%3D%2250%22%20ry%3D%2250%22%20fill%3D%22%236E8A62%22%20opacity%3D%22.75%22%2F%3E%0A%20%20%20%20%3C%21--%20sombra%2Fpiso%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2260%22%20y%3D%22456%22%20width%3D%22680%22%20height%3D%224%22%20fill%3D%22%23B8AA98%22%2F%3E%0A%20%20%0A%20%20%3C%21--%20gradient%20overlay%20top%20--%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.22%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-prop2": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23D0DDE8%22%2F%3E%0A%20%20%0A%20%20%20%20%3C%21--%20agua%20del%20dique%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22250%22%20width%3D%22800%22%20height%3D%22350%22%20fill%3D%22%23B8CEE2%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22250%22%20width%3D%22800%22%20height%3D%2220%22%20fill%3D%22%239ABDD6%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%3C%21--%20reflejos%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%22100%22%20y1%3D%22290%22%20x2%3D%22320%22%20y2%3D%22290%22%20stroke%3D%22%23D4E8F4%22%20stroke-width%3D%221.5%22%20opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22400%22%20y1%3D%22310%22%20x2%3D%22680%22%20y2%3D%22310%22%20stroke%3D%22%23D4E8F4%22%20stroke-width%3D%221%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%3C%21--%20torres%20dique%203%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22120%22%20y%3D%2260%22%20width%3D%2290%22%20height%3D%22200%22%20fill%3D%22%23E8E0D4%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22220%22%20y%3D%2290%22%20width%3D%2275%22%20height%3D%22170%22%20fill%3D%22%23DDD6CB%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22490%22%20y%3D%2250%22%20width%3D%22100%22%20height%3D%22210%22%20fill%3D%22%23E8E0D4%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22600%22%20y%3D%2280%22%20width%3D%2280%22%20height%3D%22180%22%20fill%3D%22%23DDD6CB%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3C%21--%20ventanas%20torres%20--%3E%0A%20%20%20%20%3Cg%20fill%3D%22%23A8C8DC%22%20opacity%3D%22.65%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22130%22%20y%3D%2275%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%2275%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%2275%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%22130%22%20y%3D%22100%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22150%22%20y%3D%22100%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%22170%22%20y%3D%22100%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22500%22%20y%3D%2265%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%22520%22%20y%3D%2265%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22540%22%20y%3D%2265%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%22500%22%20y%3D%2290%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22520%22%20y%3D%2290%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%22540%22%20y%3D%2290%22%20width%3D%2212%22%20height%3D%2216%22%20rx%3D%221%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3C%21--%20pasarela%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22235%22%20width%3D%22800%22%20height%3D%2220%22%20fill%3D%22%23C8B99A%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22233%22%20width%3D%22800%22%20height%3D%224%22%20fill%3D%22%23A8824F%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%0A%20%20%3C%21--%20gradient%20overlay%20top%20--%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.22%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-prop3": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23E4DDD4%22%2F%3E%0A%20%20%0A%20%20%20%20%3C%21--%20fachada%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23D8CFBF%22%2F%3E%0A%20%20%20%20%3C%21--%20molduras%20de%20fachada%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22800%22%20height%3D%2235%22%20fill%3D%22%23C8BFB0%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22560%22%20width%3D%22800%22%20height%3D%2240%22%20fill%3D%22%23C8BFB0%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22180%22%20width%3D%22800%22%20height%3D%2210%22%20fill%3D%22%23C4BAA8%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22380%22%20width%3D%22800%22%20height%3D%2210%22%20fill%3D%22%23C4BAA8%22%2F%3E%0A%20%20%20%20%3C%21--%20ventanas%20francesas%203%20%C3%97%202%20--%3E%0A%20%20%20%20%3Cg%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%2212%22%20fill%3D%22%23B8A898%22%20rx%3D%223%203%200%200%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22280%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22280%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%2212%22%20fill%3D%22%23B8A898%22%20rx%3D%223%203%200%200%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22480%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22480%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%2212%22%20fill%3D%22%23B8A898%22%20rx%3D%223%203%200%200%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22580%22%20y%3D%2255%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3Cg%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%22260%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%22260%22%20width%3D%22140%22%20height%3D%2212%22%20fill%3D%22%23B8A898%22%20rx%3D%223%203%200%200%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22280%22%20y%3D%22260%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22480%22%20y%3D%22260%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22580%22%20y%3D%22260%22%20width%3D%22140%22%20height%3D%22120%22%20fill%3D%22%23A8C2D8%22%20rx%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3C%21--%20puerta%20principal%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22330%22%20y%3D%22430%22%20width%3D%22140%22%20height%3D%22170%22%20fill%3D%22%239A8E7E%22%20rx%3D%224%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22340%22%20y%3D%22440%22%20width%3D%2255%22%20height%3D%22100%22%20fill%3D%22%2388C4D8%22%20opacity%3D%22.5%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22405%22%20y%3D%22440%22%20width%3D%2255%22%20height%3D%22100%22%20fill%3D%22%2388C4D8%22%20opacity%3D%22.5%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3C%21--%20friso%20bronce%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22418%22%20width%3D%22800%22%20height%3D%2214%22%20fill%3D%22%23A8824F%22%20opacity%3D%22.45%22%2F%3E%0A%20%20%0A%20%20%3C%21--%20gradient%20overlay%20top%20--%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.22%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-prop4": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23D8E4D0%22%2F%3E%0A%20%20%0A%20%20%20%20%3C%21--%20jard%C3%ADn%20fondo%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22300%22%20width%3D%22800%22%20height%3D%22300%22%20fill%3D%22%23C8D8B8%22%2F%3E%0A%20%20%20%20%3C%21--%20cielo%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22800%22%20height%3D%22300%22%20fill%3D%22%23D8E8F0%22%2F%3E%0A%20%20%20%20%3C%21--%20casa%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22100%22%20width%3D%22600%22%20height%3D%22320%22%20fill%3D%22%23E8E0D0%22%20rx%3D%224%22%2F%3E%0A%20%20%20%20%3C%21--%20techo%20--%3E%0A%20%20%20%20%3Cpolygon%20points%3D%2260%2C120%20400%2C30%20740%2C120%22%20fill%3D%22%23C4B89A%22%2F%3E%0A%20%20%20%20%3Cpolygon%20points%3D%2260%2C120%20100%2C120%20100%2C100%2080%2C100%22%20fill%3D%22%23B8AA8A%22%2F%3E%0A%20%20%20%20%3C%21--%20ventanas%20casa%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22140%22%20y%3D%22160%22%20width%3D%22110%22%20height%3D%22130%22%20fill%3D%22%23A8C4D4%22%20rx%3D%223%22%20opacity%3D%22.75%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22195%22%20y1%3D%22160%22%20x2%3D%22195%22%20y2%3D%22290%22%20stroke%3D%22%23D8D0C0%22%20stroke-width%3D%222%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22140%22%20y1%3D%22225%22%20x2%3D%22250%22%20y2%3D%22225%22%20stroke%3D%22%23D8D0C0%22%20stroke-width%3D%222%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22340%22%20y%3D%22160%22%20width%3D%22120%22%20height%3D%22130%22%20fill%3D%22%23A8C4D4%22%20rx%3D%223%22%20opacity%3D%22.75%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22400%22%20y1%3D%22160%22%20x2%3D%22400%22%20y2%3D%22290%22%20stroke%3D%22%23D8D0C0%22%20stroke-width%3D%222%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22340%22%20y1%3D%22225%22%20x2%3D%22460%22%20y2%3D%22225%22%20stroke%3D%22%23D8D0C0%22%20stroke-width%3D%222%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22540%22%20y%3D%22160%22%20width%3D%22120%22%20height%3D%22130%22%20fill%3D%22%23A8C4D4%22%20rx%3D%223%22%20opacity%3D%22.75%22%2F%3E%0A%20%20%20%20%3C%21--%20puerta%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22340%22%20y%3D%22340%22%20width%3D%22120%22%20height%3D%2280%22%20fill%3D%22%238A7E6E%22%20rx%3D%223%22%2F%3E%0A%20%20%20%20%3C%21--%20quincho%20fondo%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22600%22%20y%3D%22250%22%20width%3D%22160%22%20height%3D%2290%22%20fill%3D%22%23D4C8AA%22%20opacity%3D%22.8%22%20rx%3D%222%22%2F%3E%0A%20%20%20%20%3C%21--%20pasto%20y%20plantas%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22200%22%20cy%3D%22380%22%20rx%3D%2260%22%20ry%3D%2240%22%20fill%3D%22%238AAA74%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22680%22%20cy%3D%22370%22%20rx%3D%2250%22%20ry%3D%2235%22%20fill%3D%22%2396B880%22%20opacity%3D%22.75%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22420%22%20cy%3D%22390%22%20rx%3D%2230%22%20ry%3D%2220%22%20fill%3D%22%239AB884%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%21--%20senda%20de%20piedra%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22380%22%20cy%3D%22420%22%20rx%3D%2220%22%20ry%3D%228%22%20fill%3D%22%23C8BEAE%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22390%22%20cy%3D%22450%22%20rx%3D%2220%22%20ry%3D%228%22%20fill%3D%22%23C8BEAE%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22380%22%20cy%3D%22478%22%20rx%3D%2220%22%20ry%3D%228%22%20fill%3D%22%23C8BEAE%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%0A%20%20%3C%21--%20gradient%20overlay%20top%20--%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.22%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-prop5": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23E0E8F0%22%2F%3E%0A%20%20%0A%20%20%20%20%3C%21--%20interior%20moderno%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23EEE8DE%22%2F%3E%0A%20%20%20%20%3C%21--%20pared%20del%20fondo%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23E4DDD0%22%2F%3E%0A%20%20%20%20%3C%21--%20ventanal%20corrido%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2240%22%20width%3D%22640%22%20height%3D%22310%22%20fill%3D%22%23B8D0E4%22%20rx%3D%224%22%20opacity%3D%22.75%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22240%22%20y1%3D%2240%22%20x2%3D%22240%22%20y2%3D%22350%22%20stroke%3D%22%23D4CFC4%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22400%22%20y1%3D%2240%22%20x2%3D%22400%22%20y2%3D%22350%22%20stroke%3D%22%23D4CFC4%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22560%22%20y1%3D%2240%22%20x2%3D%22560%22%20y2%3D%22350%22%20stroke%3D%22%23D4CFC4%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%20%20%3C%21--%20vista%20exterior%3A%20cielo%20y%20horizonte%20BA%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2240%22%20width%3D%22640%22%20height%3D%22160%22%20fill%3D%22%23C8DFF0%22%20rx%3D%224%204%200%200%22%20opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22140%22%20width%3D%2240%22%20height%3D%2270%22%20fill%3D%22%23B4C8DA%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22160%22%20y%3D%22120%22%20width%3D%2255%22%20height%3D%2290%22%20fill%3D%22%23B4C8DA%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22500%22%20y%3D%22130%22%20width%3D%2250%22%20height%3D%2280%22%20fill%3D%22%23B4C8DA%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22580%22%20y%3D%22110%22%20width%3D%2245%22%20height%3D%22100%22%20fill%3D%22%23B4C8DA%22%20opacity%3D%22.65%22%2F%3E%0A%20%20%20%20%3C%21--%20piso%20madera%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22400%22%20width%3D%22800%22%20height%3D%22200%22%20fill%3D%22%23C8B898%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22420%22%20x2%3D%22800%22%20y2%3D%22420%22%20stroke%3D%22%23B8A888%22%20stroke-width%3D%221.5%22%20opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22450%22%20x2%3D%22800%22%20y2%3D%22450%22%20stroke%3D%22%23B8A888%22%20stroke-width%3D%221.5%22%20opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22480%22%20x2%3D%22800%22%20y2%3D%22480%22%20stroke%3D%22%23B8A888%22%20stroke-width%3D%221.5%22%20opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3C%21--%20muebles%20minimalistas%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22100%22%20y%3D%22360%22%20width%3D%22280%22%20height%3D%2250%22%20fill%3D%22%23D8D0BC%22%20rx%3D%223%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22420%22%20y%3D%22350%22%20width%3D%22200%22%20height%3D%2260%22%20fill%3D%22%23D0C8B4%22%20rx%3D%223%22%2F%3E%0A%20%20%20%20%3C%21--%20acento%20bronce%20en%20friso%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22395%22%20width%3D%22800%22%20height%3D%227%22%20fill%3D%22%23A8824F%22%20opacity%3D%22.4%22%2F%3E%0A%20%20%0A%20%20%3C%21--%20gradient%20overlay%20top%20--%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.22%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-prop6": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23E8E0D8%22%2F%3E%0A%20%20%0A%20%20%20%20%3C%21--%20living%20con%20vista%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23E8E2D4%22%2F%3E%0A%20%20%20%20%3C%21--%20ventanal%20grande%20piso%20alto%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2250%22%20y%3D%2220%22%20width%3D%22700%22%20height%3D%22360%22%20fill%3D%22%23C0D4E8%22%20rx%3D%223%22%20opacity%3D%22.8%22%2F%3E%0A%20%20%20%20%3C%21--%20vista%20BA%20desde%20arriba%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2250%22%20y%3D%2220%22%20width%3D%22700%22%20height%3D%22120%22%20fill%3D%22%23C8DFF4%22%20rx%3D%223%203%200%200%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%21--%20edificios%20vista%20a%C3%A9rea%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2280%22%20width%3D%2235%22%20height%3D%2262%22%20fill%3D%22%23B0C4D8%22%20opacity%3D%22.9%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22125%22%20y%3D%2260%22%20width%3D%2250%22%20height%3D%2282%22%20fill%3D%22%23A8BCCE%22%20opacity%3D%22.9%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22185%22%20y%3D%2290%22%20width%3D%2230%22%20height%3D%2252%22%20fill%3D%22%23B4C8DA%22%20opacity%3D%22.85%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22550%22%20y%3D%2270%22%20width%3D%2245%22%20height%3D%2272%22%20fill%3D%22%23A8BCCE%22%20opacity%3D%22.9%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22605%22%20y%3D%2255%22%20width%3D%2260%22%20height%3D%2287%22%20fill%3D%22%23B0C4D8%22%20opacity%3D%22.9%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22675%22%20y%3D%2285%22%20width%3D%2235%22%20height%3D%2257%22%20fill%3D%22%23A0B4C6%22%20opacity%3D%22.85%22%2F%3E%0A%20%20%20%20%3C%21--%20divisioria%20ventana%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%22260%22%20y1%3D%2220%22%20x2%3D%22260%22%20y2%3D%22380%22%20stroke%3D%22%23D0C8B8%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22470%22%20y1%3D%2220%22%20x2%3D%22470%22%20y2%3D%22380%22%20stroke%3D%22%23D0C8B8%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%20%20%3C%21--%20living%20interior%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22380%22%20width%3D%22800%22%20height%3D%22220%22%20fill%3D%22%23DDD4C0%22%2F%3E%0A%20%20%20%20%3C%21--%20piso%20parquet%20esp%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22380%22%20width%3D%22800%22%20height%3D%22220%22%20fill%3D%22%23C4AA84%22%20opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22400%22%20x2%3D%22800%22%20y2%3D%22400%22%20stroke%3D%22%23B09470%22%20stroke-width%3D%221%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22430%22%20x2%3D%22800%22%20y2%3D%22430%22%20stroke%3D%22%23B09470%22%20stroke-width%3D%221%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%3C%21--%20sof%C3%A1%20y%20mesa%20--%3E%0A%20%20%20%20%3Crect%20x%3D%22120%22%20y%3D%22420%22%20width%3D%22300%22%20height%3D%2290%22%20fill%3D%22%23C8BEAA%22%20rx%3D%225%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22460%22%20y%3D%22440%22%20width%3D%22140%22%20height%3D%2255%22%20fill%3D%22%23BFB5A0%22%20rx%3D%224%22%2F%3E%0A%20%20%20%20%3C%21--%20friso%20bronce%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22372%22%20width%3D%22800%22%20height%3D%229%22%20fill%3D%22%23A8824F%22%20opacity%3D%22.4%22%2F%3E%0A%20%20%0A%20%20%3C%21--%20gradient%20overlay%20top%20--%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.22%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-agente1": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22800%22%20viewBox%3D%220%200%20640%20800%22%3E%0A%20%20%0A%20%20%20%20%3C%21--%20fondo%20de%20estudio%20--%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22%23DED5C5%22%2F%3E%0A%20%20%20%20%3C%21--%20silueta%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22280%22%20rx%3D%22105%22%20ry%3D%22115%22%20fill%3D%22%23C4B09A%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q200%20520%20320%20480%20Q440%20520%20540%20800%20Z%22%20fill%3D%22%23C8BAA4%22%2F%3E%0A%20%20%20%20%3C%21--%20cuello%20y%20cara%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22245%22%20rx%3D%2272%22%20ry%3D%2280%22%20fill%3D%22%23D4C0A8%22%2F%3E%0A%20%20%20%20%3C%21--%20cabello%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22195%22%20rx%3D%2285%22%20ry%3D%2260%22%20fill%3D%22%238A7060%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M240%20220%20Q220%20300%20235%20380%22%20stroke%3D%22%238A7060%22%20stroke-width%3D%2230%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M400%20220%20Q420%20300%20405%20380%22%20stroke%3D%22%238A7060%22%20stroke-width%3D%2230%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3C%21--%20ropa%20profesional%20%E2%80%94%20navy%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q180%20540%20280%20510%20L320%20560%20L360%20510%20Q460%20540%20540%20800%20Z%22%20fill%3D%22%231E3050%22%2F%3E%0A%20%20%20%20%3C%21--%20sutileza%20bronce%20%E2%80%94%20solapa%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%22310%22%20y1%3D%22515%22%20x2%3D%22290%22%20y2%3D%22570%22%20stroke%3D%22%23A8824F%22%20stroke-width%3D%223%22%20opacity%3D%22.7%22%2F%3E%0A%20%20%20%20%3C%21--%20pared%20art%20deco%20fondo%20--%3E%0A%20%20%20%20%3Cline%20x1%3D%220%22%20y1%3D%22500%22%20x2%3D%22640%22%20y2%3D%22500%22%20stroke%3D%22%23C8BEAE%22%20stroke-width%3D%221.5%22%20opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22160%22%20y1%3D%220%22%20x2%3D%22160%22%20y2%3D%22460%22%20stroke%3D%22%23C8BEAE%22%20stroke-width%3D%221%22%20opacity%3D%22.35%22%2F%3E%0A%20%20%20%20%3Cline%20x1%3D%22480%22%20y1%3D%220%22%20x2%3D%22480%22%20y2%3D%22460%22%20stroke%3D%22%23C8BEAE%22%20stroke-width%3D%221%22%20opacity%3D%22.35%22%2F%3E%0A%20%20%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22transparent%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-agente2": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22800%22%20viewBox%3D%220%200%20640%20800%22%3E%0A%20%20%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22%23D4DDE8%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22280%22%20rx%3D%22105%22%20ry%3D%22115%22%20fill%3D%22%23C0B4A4%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M90%20800%20Q200%20520%20320%20480%20Q440%20520%20550%20800%20Z%22%20fill%3D%22%23BCAFA0%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22245%22%20rx%3D%2272%22%20ry%3D%2280%22%20fill%3D%22%23CEC0AC%22%2F%3E%0A%20%20%20%20%3C%21--%20cabello%20corto%20oscuro%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22180%22%20rx%3D%2280%22%20ry%3D%2250%22%20fill%3D%22%233A3028%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22248%22%20y%3D%22165%22%20width%3D%22144%22%20height%3D%2250%22%20fill%3D%22%233A3028%22%20rx%3D%225%22%2F%3E%0A%20%20%20%20%3C%21--%20traje%20oscuro%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M90%20800%20Q180%20540%20280%20510%20L320%20560%20L360%20510%20Q460%20540%20550%20800%20Z%22%20fill%3D%22%2316243D%22%2F%3E%0A%20%20%20%20%3C%21--%20corbata%20bronce%20--%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22315%20515%2C325%20515%2C330%20600%2C320%20620%2C310%20600%22%20fill%3D%22%23A8824F%22%2F%3E%0A%20%20%20%20%3C%21--%20camisa%20blanca%20--%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22310%20515%2C315%20515%2C313%20560%2C307%20560%22%20fill%3D%22%23E8E0D4%22%2F%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22325%20515%2C330%20515%2C333%20560%2C327%20560%22%20fill%3D%22%23E8E0D4%22%2F%3E%0A%20%20%20%20%3C%21--%20ventana%20de%20oficina%20fondo%20--%3E%0A%20%20%20%20%3Crect%20x%3D%2280%22%20y%3D%2260%22%20width%3D%22200%22%20height%3D%22300%22%20fill%3D%22%23A8C4D8%22%20rx%3D%222%22%20opacity%3D%22.3%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%22360%22%20y%3D%2260%22%20width%3D%22200%22%20height%3D%22300%22%20fill%3D%22%23A8C4D8%22%20rx%3D%222%22%20opacity%3D%22.3%22%2F%3E%0A%20%20%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22transparent%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-agente3": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22800%22%20viewBox%3D%220%200%20640%20800%22%3E%0A%20%20%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22%23D8D0C4%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22280%22%20rx%3D%22105%22%20ry%3D%22115%22%20fill%3D%22%23C8B8A4%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q200%20520%20320%20480%20Q440%20520%20540%20800%20Z%22%20fill%3D%22%23C4B49E%22%2F%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22245%22%20rx%3D%2272%22%20ry%3D%2280%22%20fill%3D%22%23D8C4AC%22%2F%3E%0A%20%20%20%20%3C%21--%20cabello%20casta%C3%B1o%20largo%20--%3E%0A%20%20%20%20%3Cellipse%20cx%3D%22320%22%20cy%3D%22190%22%20rx%3D%2290%22%20ry%3D%2265%22%20fill%3D%22%236A5040%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M235%20230%20Q200%20350%20215%20500%22%20stroke%3D%22%236A5040%22%20stroke-width%3D%2238%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M405%20230%20Q440%20350%20425%20500%22%20stroke%3D%22%236A5040%22%20stroke-width%3D%2238%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3C%21--%20blazer%20terracota%2Fcamel%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M100%20800%20Q185%20545%20285%20510%20L320%20560%20L355%20510%20Q455%20545%20540%20800%20Z%22%20fill%3D%22%23B89070%22%2F%3E%0A%20%20%20%20%3C%21--%20solapa%20--%3E%0A%20%20%20%20%3Cpath%20d%3D%22M290%20514%20Q305%20545%20320%20555%22%20stroke%3D%22%23C8A880%22%20stroke-width%3D%2212%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M350%20514%20Q335%20545%20320%20555%22%20stroke%3D%22%23C8A880%22%20stroke-width%3D%2212%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3C%21--%20fondo%20Belgrano%20%E2%80%94%20ladrillos%20suaves%20--%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.25%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22400%22%20width%3D%22640%22%20height%3D%22400%22%20fill%3D%22%23C4A880%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22420%22%20width%3D%22640%22%20height%3D%2214%22%20fill%3D%22%23B89870%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22448%22%20width%3D%22640%22%20height%3D%2214%22%20fill%3D%22%23B89870%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%22476%22%20width%3D%22640%22%20height%3D%2214%22%20fill%3D%22%23B89870%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22ov%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22transparent%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2316243D%22%20stop-opacity%3D%22.18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22800%22%20fill%3D%22url%28%23ov%29%22%2F%3E%0A%3C%2Fsvg%3E",
-  "levi-cliente1": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%20%20%3Crect%20width%3D%22120%22%20height%3D%22120%22%20fill%3D%22%23E4DDD0%22%20rx%3D%2260%22%2F%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20font-weight%3D%22400%22%20fill%3D%22%2316243D%22%20letter-spacing%3D%221%22%3EFE%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
-  "levi-cliente2": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%20%20%3Crect%20width%3D%22120%22%20height%3D%22120%22%20fill%3D%22%23D0DAE4%22%20rx%3D%2260%22%2F%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20font-weight%3D%22400%22%20fill%3D%22%2316243D%22%20letter-spacing%3D%221%22%3EMO%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
-  "levi-cliente3": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%0A%20%20%3Crect%20width%3D%22120%22%20height%3D%22120%22%20fill%3D%22%23D8E4D8%22%20rx%3D%2260%22%2F%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20font-weight%3D%22400%22%20fill%3D%22%2316243D%22%20letter-spacing%3D%221%22%3EGP%3C%2Ftext%3E%0A%3C%2Fsvg%3E",
+  "levi-prop1": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=80",
+  "levi-prop2": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80",
+  "levi-prop3": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+  "levi-prop4": "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80",
+  "levi-prop5": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80",
+  "levi-prop6": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80"
 };
 const movReducido=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
@@ -1473,30 +1447,6 @@ const ioCont=new IntersectionObserver((es)=>{
   });
 },{threshold:.6});
 document.querySelectorAll('[data-contador]').forEach(el=>ioCont.observe(el));
-
-/* ── MAPA: init perezoso al acercarse la sección ── */
-let mapaListo=false;
-new IntersectionObserver((es,io)=>{
-  if(!es[0].isIntersecting||mapaListo||typeof L==='undefined')return;
-  mapaListo=true;io.disconnect();
-  const mapa=L.map('mapa-leaflet',{scrollWheelZoom:false}).setView([-34.578,-58.418],12);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
-    maxZoom:18
-  }).addTo(mapa);
-  PROPS.forEach(p=>{
-    const pin=L.divIcon({className:'pin-levi',html:'<i></i>',iconSize:[16,16],iconAnchor:[8,8]});
-    L.marker([p.lat,p.lng],{icon:pin,title:p.barrio+' — '+usd(p.precio)})
-     .addTo(mapa)
-     .bindPopup(`<div class="mini-prop">
-        <img src="${IMG[p.seed] || ''}" alt="${p.titulo}">
-        <div>
-          <p class="mp-barrio">${p.barrio} · ${p.op==='venta'?'Venta':'Alquiler'}</p>
-          <p class="mp-precio">${usd(p.precio)}${p.op==='alquiler'?' /mes':''}</p>
-          <a href="#prop-${p.id}">Ver propiedad →</a>
-        </div></div>`);
-  });
-},{rootMargin:'400px'}).observe(document.getElementById('mapa-leaflet'));
 
 /* ── CALCULADORAS ── */
 const $=id=>document.getElementById(id);
